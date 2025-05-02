@@ -1,3 +1,14 @@
+## Intro ##
+
+Prisma is a *ORM tool.
+
+*ORM (Object Relational Mapping) is a technique used in creating a bridge between object-oriented programs 
+and, in most cases, relational databases.
+
+https://www.prisma.io/docs/orm/overview/introduction/what-is-prisma
+
+--------------------------------------------
+
 ## Products in use ##
 
 Prisma Client - send queries
@@ -14,5 +25,33 @@ https://www.prisma.io/docs/orm/prisma-schema/overview
 
 ## Get Started ##
 
-Prima for existing RDB (PostgreSQL) - Node.js & TypeScript
+Prisma for existing RDB (PostgreSQL) - Node.js & TypeScript
 https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgresql
+
+--------------------------
+
+# Prisma CLI #
+
+Install Prisma CLI (per project as a dev tool):
+$ npm install prisma --save-dev
+
+Invoke Prisma CLI:
+$ npx prisma
+
+Init Prisma:
+$ npx prisma init --datasource-provider postgresql --output ../generated/prisma
+
+- Create Prisma Folder With Prisma Schema (npx prisma init)
+- Set datasource to PostgreSQL (--datasource-provider postgresql)
+- Create the .env file in the root directory of the project (--output ../generated/prisma)
+
+--------------------------
+
+# Prisma Client #
+
+Install Prisma/Client:
+$ npm install @prisma/client
+
+Generate Prima Client:
+$ npx prisma generate
+https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/install-prisma-client-typescript-postgresql
