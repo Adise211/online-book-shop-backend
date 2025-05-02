@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "esModuleInterop": true, // ensure support of two kinds of import statements
+    "skipLibCheck": true, // skip checking external lib
+    "module": "NodeNext", // ensure support in export/import
+    "outDir": "dist",
+    "lib": ["es2022", "DOM"], // ensure ts aware of base types
+    "strict": true
+  }
+}

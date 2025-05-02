@@ -1,0 +1,18 @@
+## Products in use ##
+
+Prisma Client - send queries
+https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/introduction
+
+Prisma Migration - change the database schema 
+https://www.prisma.io/docs/orm/prisma-migrate/understanding-prisma-migrate/overview
+
+Prisma Schema - the main method of configuration for our Prisma ORM setup
+https://www.prisma.io/docs/orm/prisma-schema/overview
+
+
+--------------------------------------------
+
+## Get Started ##
+
+Prima for existing RDB (PostgreSQL) - Node.js & TypeScript
+https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgresql
