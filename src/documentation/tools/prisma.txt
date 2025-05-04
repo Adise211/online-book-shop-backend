@@ -8,6 +8,7 @@ and, in most cases, relational databases.
 https://www.prisma.io/docs/orm/overview/introduction/what-is-prisma
 
 --------------------------------------------
+--------------------------------------------
 
 ## Products in use ##
 
@@ -22,6 +23,7 @@ https://www.prisma.io/docs/orm/prisma-schema/overview
 
 
 --------------------------------------------
+--------------------------------------------
 
 ## Get Started ##
 
@@ -35,15 +37,29 @@ https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/
 Install Prisma CLI (per project as a dev tool):
 $ npm install prisma --save-dev
 
+Install VS Code Extention:
+prisma (offical from prisma)
+
 Invoke Prisma CLI:
 $ npx prisma
 
 Init Prisma:
 $ npx prisma init --datasource-provider postgresql --output ../generated/prisma
 
-- Create Prisma Folder With Prisma Schema (npx prisma init)
+- Creates Prisma Folder With **Prisma Schema (npx prisma init)
 - Set datasource to PostgreSQL (--datasource-provider postgresql)
-- Create the .env file in the root directory of the project (--output ../generated/prisma)
+- Set the generator (--output ../generated/prisma)
+- Creates the .env file in the root directory of the project 
+
+----- OR -----
+
+$ npx prisma init
+and config manually the datasource and generator in schema.prisma file + add database connection url in .env file
+
+** Prisma Schema file
+Every project that uses a tool from the Prisma ORM toolkit starts with a Prisma schema.
+The Prisma schema allows developers to define their application models in an intuitive data modeling language. 
+It also contains the connection to a database and defines a generator
 
 --------------------------
 
@@ -52,6 +68,58 @@ $ npx prisma init --datasource-provider postgresql --output ../generated/prisma
 Install Prisma/Client:
 $ npm install @prisma/client
 
-Generate Prima Client:
-$ npx prisma generate
 https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/install-prisma-client-typescript-postgresql
+
+
+Generate Prisma Client:
+$ npx prisma generate
+
+You need to re-run the prisma generate command after every change that's made to your 
+Prisma schema to update the generated Prisma Client code (if using prisma migrate - it happens behind the scene)
+
+--------------------------
+
+# Generating Prisma Client Package - WorkFlow #
+
+*** PAY ATTAINTION ***
+By default, Prisma Client is generated into the node_modules/.prisma/client folder.
+In V7: Prisma Client will no longer be generated in node_modules by default and will require an output path to be defined (in schema.prisma file)
+
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+  * output   = "../generated/prisma"
+}
+
+* output - currenly is on disable/comment-out ('prisma generate' generates to node_modules but in V7 we have to work with it)!
+Read more here - https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/generating-prisma-client#the-prismaclient-npm-package
+
+--------------------------------------------
+--------------------------------------------
+
+## WorkFlow ##
+
+# Schema Models (presented as database tables) #
+
+Read and update database schema 
+There 2 ways to read and update tables in our database using Prisma:
+1. Prisma Migrate - Manually writing the data model and mapping it to the database with Prisma Migrate
+2. SQL and introspection - Generating the data model by introspecting a database
+
+We are using option 1 - Prisma Migrate!
+
+
+CRUD on database/prisma-schema models
+
+--------------------------
+
+# Prisma Migration #
+
+--------------------------------------------
+--------------------------------------------
+
+## ERRORS ##
+
+Error: @prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.
+Solution: removed the output line in generate object in prisma/schema.prisma file
+Related Link: https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/generating-prisma-client#the-prismaclient-npm-package
