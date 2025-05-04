@@ -1,4 +1,6 @@
+--------------------------------------------
 ## Intro ##
+--------------------------------------------
 
 Prisma is a *ORM tool.
 
@@ -8,9 +10,8 @@ and, in most cases, relational databases.
 https://www.prisma.io/docs/orm/overview/introduction/what-is-prisma
 
 --------------------------------------------
---------------------------------------------
-
 ## Products in use ##
+--------------------------------------------
 
 Prisma Client - send queries
 https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/introduction
@@ -23,9 +24,8 @@ https://www.prisma.io/docs/orm/prisma-schema/overview
 
 
 --------------------------------------------
---------------------------------------------
-
 ## Get Started ##
+--------------------------------------------
 
 Prisma for existing RDB (PostgreSQL) - Node.js & TypeScript
 https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgresql
@@ -95,9 +95,8 @@ generator client {
 Read more here - https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/generating-prisma-client#the-prismaclient-npm-package
 
 --------------------------------------------
---------------------------------------------
-
 ## WorkFlow ##
+--------------------------------------------
 
 # Schema Models (presented as database tables) #
 
@@ -116,9 +115,9 @@ CRUD on database/prisma-schema models
 # Prisma Migration #
 
 --------------------------------------------
+## ERRORS ##
 --------------------------------------------
 
-## ERRORS ##
 
 Error: @prisma/client did not initialize yet. Please run "prisma generate" and try to import it again.
 Solution: removed the output line in generate object in prisma/schema.prisma file
