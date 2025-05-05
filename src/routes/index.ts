@@ -1,4 +1,6 @@
 import express from "express";
+import { getHomePageBooks } from "../controllers/books.js";
+
 const router = express.Router();
 
 // router.post("/todos", (req, res) => {
@@ -19,5 +21,6 @@ const router = express.Router();
 //   const todo = getTodo(+req.params.id);
 //   res.json(todo);
 // });
+router.get("/", getHomePageBooks);
 
 export default router;
