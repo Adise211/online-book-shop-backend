@@ -2,6 +2,7 @@ import express from "express";
 import {
   getHomePageBooks,
   getBookCategoriesList,
+  getBooksByCategorie,
 } from "../controllers/books.js";
 
 const router = express.Router();
@@ -26,5 +27,6 @@ const router = express.Router();
 // });
 router.get("/", getHomePageBooks);
 router.get("/categories", getBookCategoriesList);
+router.get("/books/:categorie", getBooksByCategorie);
 
 export default router;

@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { ResponseToClient } from "../../types.js";
 import { bookCategories } from "../utils/consts.js";
+import { PARAMETER_IS_REQUIRED } from "../utils/errorMessages.js";
+import { isCategorieExist } from "../utils/utilFunc.js";
 
 // get best seller books (for home page) - ✅
 // get book categories - ✅
-// TODO: get a book by a categorie
+// get a book by a categorie - ✅
 // TODO: add a book to favorites
 // TODO: remove a book from favorites
 
@@ -14,9 +16,9 @@ const GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/volumes";
 const GOOGLE_BOOKS_FILTERED_FIELDS =
   "kind, totalItems, items(id, volumeInfo(title, subtitle, authors, description, publishedDate, pageCount, categories, imageLinks, language ), saleInfo)";
 
-export async function getHomePageBooks(req: Request, res: Response) {
+async function googleBooksAPIRequest(query: string): Promise<ResponseToClient> {
   const response = await fetch(
-    `${GOOGLE_BOOKS_API}?q=bestseller&orderBy=newest&fields=${GOOGLE_BOOKS_FILTERED_FIELDS}`
+    `${GOOGLE_BOOKS_API}?q=${query}&fields=${GOOGLE_BOOKS_FILTERED_FIELDS}`
   );
 
   let books = await response.json();
@@ -43,7 +45,11 @@ export async function getHomePageBooks(req: Request, res: Response) {
       Data: [],
     };
   }
+  return result;
+}
 
+export async function getHomePageBooks(req: Request, res: Response) {
+  const result = await googleBooksAPIRequest("bestseller&orderBy=newest");
   res.send(result);
 }
 
@@ -63,4 +69,26 @@ export async function getBookCategoriesList(req: Request, res: Response) {
   res.send(result);
 }
 
-export async function getBooksByCategorie(req: Request, res: Response) {}
+export async function getBooksByCategorie(req: Request, res: Response) {
+  let result: ResponseToClient;
+
+  const { categorie } = req.params;
+  if (categorie && isCategorieExist(categorie)) {
+    result = await googleBooksAPIRequest(`subject:${categorie}`);
+  } else {
+    const resultMsg = !isCategorieExist(categorie)
+      ? `Categorie '${categorie}' is not exist`
+      : `${PARAMETER_IS_REQUIRED}: categorie`;
+
+    result = {
+      Result: {
+        ResultCode: -1,
+        ResultMessage: resultMsg,
+        IsError: true,
+        Source: "system",
+      },
+      Data: [],
+    };
+  }
+  res.send(result);
+}
