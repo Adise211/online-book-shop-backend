@@ -1,5 +1,8 @@
 import express from "express";
-import { getHomePageBooks } from "../controllers/books.js";
+import {
+  getHomePageBooks,
+  getBookCategoriesList,
+} from "../controllers/books.js";
 
 const router = express.Router();
 
@@ -22,5 +25,6 @@ const router = express.Router();
 //   res.json(todo);
 // });
 router.get("/", getHomePageBooks);
+router.get("/categories", getBookCategoriesList);
 
 export default router;

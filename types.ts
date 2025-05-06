@@ -1,7 +1,10 @@
+import { bookCategories } from "./src/utils/consts.js";
+
 // external (google books, external api's)
 // system (db)
 type ResultSource = "system" | "external";
 type ResultCodes = 1 | -1;
+type BookCategories = (typeof bookCategories)[number]; //* turned array to type */
 
 export interface User {
   id: string;
@@ -19,6 +22,7 @@ export interface Book {
   coverImgURL: string;
   rating: number;
   reviews: Review[];
+  categorie: BookCategories;
 }
 
 export interface Auhtor {

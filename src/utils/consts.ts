@@ -1,0 +1,15 @@
+export const bookCategories = [
+  "fiction",
+  "history",
+  "science",
+  "technology",
+  "psychology",
+  "psychology",
+  "health",
+  "biography",
+  "philosophy",
+  "business",
+  "art",
+  "music",
+  "comics",
+] as const;
