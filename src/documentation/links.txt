@@ -6,3 +6,7 @@ https://www.prisma.io
 
 ## Google Books - Books API's ##
 https://developers.google.com/books/docs/overview
+
+## bcrypt - password hashing #
+https://bcrypt-generator.com
+how does it work - https://www.freecodecamp.org/news/how-to-hash-passwords-with-bcrypt-in-nodejs
