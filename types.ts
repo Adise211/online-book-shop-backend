@@ -12,17 +12,19 @@ export interface User {
   password: string;
   name: string;
   favorites: Book[];
+  reviews: Review[];
 }
 
 export interface Book {
   id: string;
   title: string;
-  author: Auhtor;
-  publishedYear: number;
-  coverImgURL: string;
+  authors: Auhtor[];
+  publishedDate: string;
+  pageCount: number;
+  imageLink: string;
   rating: number;
+  categories: BookCategories[];
   reviews: Review[];
-  categorie: BookCategories;
 }
 
 export interface Auhtor {
@@ -34,8 +36,8 @@ export interface Auhtor {
 
 export interface Review {
   id: string;
-  rate: number;
-  text: string;
+  rating: number;
+  description: string;
   createdBy: User;
   date: string;
 }
