@@ -25,7 +25,7 @@ const router = express.Router();
 //   const todo = getTodo(+req.params.id);
 //   res.json(todo);
 // });
-router.get("/", getHomePageBooks);
+router.get("/books", getHomePageBooks);
 router.get("/categories", getBookCategoriesList);
 router.get("/books/:categorie", getBooksByCategorie);
 
