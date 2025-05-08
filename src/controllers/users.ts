@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { createUser, findUserByEmail } from "../models/users.models.js";
 import { ResponseToClient } from "../../types.js";
-import { hashPassword, isPasswordCorrect } from "../services/index.js";
+import {
+  generateToken,
+  hashPassword,
+  isPasswordCorrect,
+} from "../utils/auth.utils.js";
 
 // auth: create user
 // auth: get user
@@ -67,6 +71,8 @@ export async function loginUser(req: Request, res: Response) {
         console.log("CC:", isCorrect);
 
         if (isCorrect) {
+          const token = generateToken({ userId: user.id, email: user.email });
+
           result = {
             Result: {
               ResultCode: 1,
@@ -74,7 +80,7 @@ export async function loginUser(req: Request, res: Response) {
               IsError: false,
               Source: "system",
             },
-            Data: user,
+            Data: { user, token },
           };
           res.status(201).json(result);
         } else {

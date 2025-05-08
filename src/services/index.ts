@@ -1,5 +1,4 @@
 import { ResponseToClient } from "../../types.js";
-import bcrypt from "bcrypt";
 
 const GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/volumes";
 // performence tips: limited amount of results, return spesific fields
@@ -40,29 +39,3 @@ export async function googleBooksAPIRequest(
   }
   return result;
 }
-
-export async function hashPassword(plainPassword: string) {
-  const SALT_ROUNDS = 10;
-  const hashedPassword = await bcrypt.hash(plainPassword, SALT_ROUNDS);
-
-  return hashedPassword;
-}
-
-export async function isPasswordCorrect(
-  inputPassword: string,
-  savedUserPassword: string | null
-) {
-  if (!savedUserPassword) {
-    throw new Error("Password is not exist!");
-  }
-
-  const isPassCorrect = await bcrypt.compare(inputPassword, savedUserPassword);
-  return isPassCorrect;
-}
-
-// async function exacute() {
-//   const hashed = await hashPassword("password");
-//   isPasswordCorrect("password", hashed);
-// }
-
-// exacute();
