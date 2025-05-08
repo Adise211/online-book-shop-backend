@@ -4,6 +4,7 @@ import { bookCategories } from "../utils/consts.js";
 import { PARAMETER_IS_REQUIRED } from "../utils/errorMessages.js";
 import { isCategorieExist } from "../utils/utilFunc.js";
 import { googleBooksAPIRequest } from "../services/index.js";
+import { addBookToFavorites } from "../models/books.models.js";
 
 // get best seller books (for home page) - ✅
 // get book categories - ✅
@@ -56,6 +57,52 @@ export async function getBooksByCategorie(req: Request, res: Response) {
   res.send(result);
 }
 
-export async function addBookToFavorites(book: Book) {
-  // Add to favorites table
+export async function addToFavorites(req: Request, res: Response) {
+  try {
+    let result: ResponseToClient;
+
+    if (req.body) {
+      const book: Book = req.body.book;
+      const userId: number = req.body.userId;
+      // TODO: check if field is missing and show error which one
+
+      // const {
+      //   title,
+      //   authors,
+      //   publishedDate,
+      //   pageCount,
+      //   imageLink,
+      //   rating,
+      //   categories,
+      // } = book;
+
+      // if (
+      //   !title ||
+      //   !authors ||
+      //   !publishedDate ||
+      //   !pageCount ||
+      //   !imageLink ||
+      //   !rating ||
+      //   !categories ||
+      //   !userId
+      // ) {
+      //   res.status(400).json({ message: "Missing fields" });
+      // }
+
+      const saved = await addBookToFavorites(book, userId);
+      result = {
+        Result: {
+          ResultCode: 1,
+          ResultMessage: "",
+          IsError: false,
+          Source: "system",
+        },
+        Data: saved,
+      };
+      res.status(201).json(result);
+    }
+  } catch (error) {
+    console.error("Error in addBookToFavorites:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }

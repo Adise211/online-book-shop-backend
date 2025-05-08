@@ -16,22 +16,14 @@ export interface User {
 }
 
 export interface Book {
-  id: string;
+  id?: string;
   title: string;
-  authors: Auhtor[];
-  publishedDate: string;
+  authors: string[];
+  publishedDate: number;
   pageCount: number;
   imageLink: string;
   rating: number;
   categories: BookCategories[];
-  reviews: Review[];
-}
-
-export interface Auhtor {
-  id: string;
-  name: string;
-  imgURL: string;
-  books: Book[];
 }
 
 export interface Review {
