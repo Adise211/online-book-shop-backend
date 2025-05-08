@@ -1,13 +1,15 @@
 ## Authentication ##
 
-email & password
+Email & Password
+
+Tutorial - https://www.youtube.com/watch?v=Ud5xKCYQTjM
 
 ---------------------------------------
 
 ## Authorization - using JWT ##
 
-Tutorial - https://www.youtube.com/watch?v=7Q17ubqLfaM&t=580s
 JWT - Json Web Tokens
+Tutorial - https://www.youtube.com/watch?v=7Q17ubqLfaM&t=580s
 
 ---------------------------------------
 
