@@ -13,7 +13,7 @@ import {
 // get book categories - ✅
 // get a book by a categorie - ✅
 // add a book to favorites - ✅
-// TODO: remove a book from favorites
+// remove a book from favorites - ✅
 
 export async function getHomePageBooks(req: Request, res: Response) {
   const result = await googleBooksAPIRequest("bestseller&orderBy=newest");

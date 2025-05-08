@@ -3,7 +3,7 @@ import { Book } from "../../types.js";
 
 // TODO: get all favorites by user id
 // add to favorites - ✅
-// TODO: remove from favorites
+// remove from favorites - ✅
 
 const prisma = new PrismaClient();
 
