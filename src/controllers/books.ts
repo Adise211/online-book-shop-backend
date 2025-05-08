@@ -4,12 +4,15 @@ import { bookCategories } from "../utils/consts.js";
 import { PARAMETER_IS_REQUIRED } from "../utils/errorMessages.js";
 import { isCategorieExist } from "../utils/utilFunc.js";
 import { googleBooksAPIRequest } from "../services/index.js";
-import { addBookToFavorites } from "../models/books.models.js";
+import {
+  addBookToFavorites,
+  removeBookFromFavorites,
+} from "../models/books.models.js";
 
 // get best seller books (for home page) - ✅
 // get book categories - ✅
 // get a book by a categorie - ✅
-// TODO: add a book to favorites
+// add a book to favorites - ✅
 // TODO: remove a book from favorites
 
 export async function getHomePageBooks(req: Request, res: Response) {
@@ -105,4 +108,27 @@ export async function addToFavorites(req: Request, res: Response) {
     console.error("Error in addBookToFavorites:", error);
     res.status(500).json({ message: "Internal server error" });
   }
+}
+
+export async function removeFromFavorites(req: Request, res: Response) {
+  try {
+    let result: ResponseToClient;
+
+    if (req.body) {
+      const { userId, bookId, googleVolumeId } = req.body;
+      // TODO: check if field is missing and show error which one
+      await removeBookFromFavorites(userId, bookId, googleVolumeId);
+
+      result = {
+        Result: {
+          ResultCode: 1,
+          ResultMessage: "Removed successfuly!",
+          IsError: false,
+          Source: "system",
+        },
+        Data: [],
+      };
+      res.status(201).json(result);
+    }
+  } catch (error) {}
 }

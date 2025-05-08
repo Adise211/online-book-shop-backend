@@ -5,6 +5,7 @@ import {
   getBookCategoriesList,
   getBooksByCategorie,
   addToFavorites,
+  removeFromFavorites,
 } from "../controllers/books.js";
 import { authenticateToken } from "../middlewares/auth.js";
 
@@ -23,5 +24,6 @@ router.get("/protected", authenticateToken, (req, res) => {
   res.json({ message: "Success!", user: (req as any).user });
 });
 router.post("/favorites", authenticateToken, addToFavorites);
+router.delete("/favorites", authenticateToken, removeFromFavorites);
 
 export default router;

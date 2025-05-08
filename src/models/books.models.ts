@@ -33,3 +33,19 @@ export async function addBookToFavorites(book: Book, userId: number) {
 
   return favoriteBook;
 }
+
+export async function removeBookFromFavorites(
+  userId: number,
+  bookId: number,
+  googleVolumeId: string
+) {
+  const deletedBook = await prisma.favorites.delete({
+    where: {
+      id: bookId,
+      userId,
+      googleVolumeId,
+    },
+  });
+
+  return deletedBook;
+}
