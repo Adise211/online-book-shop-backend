@@ -1,0 +1,17 @@
+## Authentication ##
+
+email & password
+
+---------------------------------------
+
+## Authorization - using JWT ##
+
+Tutorial - https://www.youtube.com/watch?v=7Q17ubqLfaM&t=580s
+JWT - Json Web Tokens
+
+---------------------------------------
+
+## Generate secret string ##
+
+$ node
+$ require('crypto').randomBytes(64).toString('hex')

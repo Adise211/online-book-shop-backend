@@ -7,12 +7,12 @@ type ResultCodes = 1 | -1;
 export type BookCategories = (typeof bookCategories)[number]; //* turned array to type */
 
 export interface User {
-  id: string;
+  id?: string;
   email: string;
   password: string;
   name: string;
-  favorites: Book[];
-  reviews: Review[];
+  favorites?: Book[];
+  reviews?: Review[];
 }
 
 export interface Book {

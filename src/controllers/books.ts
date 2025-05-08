@@ -3,7 +3,7 @@ import { ResponseToClient, Book } from "../../types.js";
 import { bookCategories } from "../utils/consts.js";
 import { PARAMETER_IS_REQUIRED } from "../utils/errorMessages.js";
 import { isCategorieExist } from "../utils/utilFunc.js";
-import { googleBooksAPIRequest } from "../service/index.js";
+import { googleBooksAPIRequest } from "../services/index.js";
 
 // get best seller books (for home page) - ✅
 // get book categories - ✅
