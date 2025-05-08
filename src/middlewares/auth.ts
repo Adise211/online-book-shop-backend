@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utils/auth.utils.js";
-// TODO: authenticate user (email & password)
-// TODO: authorization (token)
+// authenticate user (email & password) - ✅
+// authorization (token) - ✅
 
 export function authenticateToken(
   req: Request,
