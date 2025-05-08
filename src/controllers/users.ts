@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { createUser } from "../models/users.models.js";
+import { createUser, findUserByEmail } from "../models/users.models.js";
 import { ResponseToClient } from "../../types.js";
-import { hashPassword } from "../services/index.js";
+import { hashPassword, isPasswordCorrect } from "../services/index.js";
 
 // auth: create user
 // auth: get user
@@ -42,4 +42,54 @@ export async function signupUser(req: Request, res: Response) {
     console.error("Error in signupUser:", error);
     res.status(500).json({ message: "Internal server error" });
   }
+}
+
+export async function loginUser(req: Request, res: Response) {
+  try {
+    let result: ResponseToClient;
+
+    if (req.body) {
+      console.log("AA:", req.body);
+
+      let { email, password } = req.body;
+
+      if (!email || !password) {
+        res.status(400).json({ message: "Missing fields" });
+      }
+
+      const user = await findUserByEmail(email);
+      console.log("BB:", user);
+
+      if (!user) {
+        res.status(400).json({ message: "User is not exist" });
+      } else {
+        const isCorrect = await isPasswordCorrect(password, user.password);
+        console.log("CC:", isCorrect);
+
+        if (isCorrect) {
+          result = {
+            Result: {
+              ResultCode: 1,
+              ResultMessage: "Success in login",
+              IsError: false,
+              Source: "system",
+            },
+            Data: user,
+          };
+          res.status(201).json(result);
+        } else {
+          result = {
+            Result: {
+              ResultCode: -1,
+              ResultMessage: "Incorrect email or password",
+              IsError: true,
+              Source: "system",
+            },
+            Data: {},
+          };
+          res.json(result);
+        }
+      }
+    }
+  } catch (error) {}
 }

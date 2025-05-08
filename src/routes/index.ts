@@ -1,5 +1,5 @@
 import express from "express";
-import { signupUser } from "../controllers/users.js";
+import { signupUser, loginUser } from "../controllers/users.js";
 import {
   getHomePageBooks,
   getBookCategoriesList,
@@ -10,6 +10,7 @@ const router = express.Router();
 
 /* users */
 router.post("/signup", signupUser);
+router.post("/login", loginUser);
 
 /* books */
 router.get("/books", getHomePageBooks);
