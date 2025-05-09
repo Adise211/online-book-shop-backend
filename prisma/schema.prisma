@@ -39,10 +39,11 @@ model Favorites {
 }
 
 model Reviews {
-  id          Int      @id @default(autoincrement())
-  rating      Int      @default(0)
-  description String
-  date        DateTime @updatedAt
-  createdBy   User     @relation(fields: [userId], references: [id])
-  userId      Int
+  id             Int      @id @default(autoincrement())
+  googleVolumeId String   @default("")
+  rating         Int      @default(0)
+  description    String
+  date           DateTime @updatedAt
+  createdBy      User     @relation(fields: [userId], references: [id])
+  userId         Int
 }
