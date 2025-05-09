@@ -10,6 +10,7 @@ import {
 } from "../controllers/books.js";
 import { authenticateToken } from "../middlewares/auth.js";
 import { validateFields } from "../middlewares/errorHandler.js";
+import { createBookReview } from "../controllers/reviews.js";
 
 const router = express.Router();
 
@@ -56,6 +57,19 @@ router.delete(
   authenticateToken,
   validateFields("body", ["userId", "bookId", "googleVolumeId"]),
   removeFromFavorites
+);
+
+/* REVIEWS */
+//--post
+router.post(
+  "/reviews",
+  authenticateToken,
+  validateFields("body", [
+    "data.rating",
+    "data.description",
+    "data.googleVolumeId",
+  ]),
+  createBookReview
 );
 
 export default router;

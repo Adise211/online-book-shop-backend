@@ -21,7 +21,7 @@ export interface Book {
   title: string;
   googleVolumeId: string;
   authors: string[];
-  publishedDate: number;
+  publishedDate: number; //epoch miliseconds
   pageCount: number;
   imageLink: string;
   rating: number;
@@ -29,11 +29,13 @@ export interface Book {
 }
 
 export interface Review {
-  id: string;
+  id?: string;
+  googleVolumeId: string;
   rating: number;
   description: string;
   createdBy: User;
   date: string;
+  userId: number;
 }
 
 export interface ResponseToClient {

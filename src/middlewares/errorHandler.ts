@@ -23,7 +23,7 @@ export function validateFields(
       } else {
         // req.body || req.params || req.query was not found!
         console.error(
-          `Error Handler 'validateFields': '${req[source]}' was not found`
+          `Error Handler 'validateFields': the '${source}' in request was not found`
         );
         res.status(500).json({ message: "Internal server error" });
       }
