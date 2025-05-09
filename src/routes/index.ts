@@ -64,11 +64,7 @@ router.delete(
 router.post(
   "/reviews",
   authenticateToken,
-  validateFields("body", [
-    "data.rating",
-    "data.description",
-    "data.googleVolumeId",
-  ]),
+  validateFields("body", ["rating", "description", "googleVolumeId"]),
   createBookReview
 );
 

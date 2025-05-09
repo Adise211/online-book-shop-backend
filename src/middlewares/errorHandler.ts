@@ -11,9 +11,12 @@ export function validateFields(
         let missingFields: string[] = [];
 
         // Check if required fields exist in the request.source (body, params or query)
-        missingFields = requiredFields.filter((field) => {
-          if (!req[source][field]) return field;
+        requiredFields.forEach((field) => {
+          if (!req[source][field] && !req[source].data[field]) {
+            missingFields.push(field);
+          }
         });
+
         // If fields are missing - send error message
         if (missingFields.length > 0) {
           res
