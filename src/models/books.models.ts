@@ -10,6 +10,7 @@ const prisma = new PrismaClient();
 export async function addBookToFavorites(book: Book, userId: number) {
   const {
     title,
+    googleVolumeId,
     authors,
     publishedDate,
     pageCount,
@@ -21,6 +22,7 @@ export async function addBookToFavorites(book: Book, userId: number) {
   const favoriteBook = await prisma.favorites.create({
     data: {
       title,
+      googleVolumeId,
       authors,
       publishedDate,
       pageCount,

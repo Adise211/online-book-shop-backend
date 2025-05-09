@@ -39,6 +39,7 @@ router.post(
   authenticateToken,
   validateFields("body", [
     "title",
+    "googleVolumeId",
     "authors",
     "publishedDate",
     "pageCount",

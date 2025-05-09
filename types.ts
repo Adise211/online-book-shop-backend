@@ -19,6 +19,7 @@ export interface User {
 export interface Book {
   id?: string;
   title: string;
+  googleVolumeId: string;
   authors: string[];
   publishedDate: number;
   pageCount: number;
