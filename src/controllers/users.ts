@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createUser, findUserByEmail } from "../models/users.models.js";
-import { ResponseToClient } from "../../types.js";
+import { ResponseToClient, User } from "../../types.js";
 import {
   generateToken,
   hashPassword,
@@ -19,16 +19,12 @@ export async function signupUser(req: Request, res: Response) {
     let result: ResponseToClient;
 
     if (req.body) {
-      let { email, password, name } = req.body;
-
-      if (!email || !password || !name) {
-        res.status(400).json({ message: "Missing fields" });
-      }
+      let { email, password, name }: User = req.body;
 
       const hashedPassword = await hashPassword(password);
       if (hashedPassword) {
         password = hashedPassword;
-        const data = { email, password, name, favorites: [], reviews: [] };
+        const data = { email, password, name };
         const response = await createUser(data);
         result = {
           Result: {
@@ -53,23 +49,14 @@ export async function loginUser(req: Request, res: Response) {
     let result: ResponseToClient;
 
     if (req.body) {
-      console.log("AA:", req.body);
-
-      let { email, password } = req.body;
-
-      if (!email || !password) {
-        res.status(400).json({ message: "Missing fields" });
-      }
+      let { email, password }: User = req.body;
 
       const user = await findUserByEmail(email);
-      console.log("BB:", user);
 
       if (!user) {
         res.status(400).json({ message: "User is not exist" });
       } else {
         const isCorrect = await isPasswordCorrect(password, user.password);
-        console.log("CC:", isCorrect);
-
         if (isCorrect) {
           const token = generateToken({ userId: user.id, email: user.email });
 

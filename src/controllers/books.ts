@@ -69,30 +69,6 @@ export async function addToFavorites(req: Request, res: Response) {
     if (req.body) {
       const book: Book = req.body.book;
       const userId: number = req.body.userId;
-      // TODO: check if field is missing and show error which one
-
-      // const {
-      //   title,
-      //   authors,
-      //   publishedDate,
-      //   pageCount,
-      //   imageLink,
-      //   rating,
-      //   categories,
-      // } = book;
-
-      // if (
-      //   !title ||
-      //   !authors ||
-      //   !publishedDate ||
-      //   !pageCount ||
-      //   !imageLink ||
-      //   !rating ||
-      //   !categories ||
-      //   !userId
-      // ) {
-      //   res.status(400).json({ message: "Missing fields" });
-      // }
 
       const saved = await addBookToFavorites(book, userId);
       result = {

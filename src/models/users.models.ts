@@ -7,7 +7,7 @@ import { User } from "../../types.js";
 const prisma = new PrismaClient();
 
 export async function createUser(data: User) {
-  const { email, password, name } = data;
+  const { email, password, name }: User = data;
 
   const user = await prisma.user.create({
     data: {

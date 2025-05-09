@@ -9,27 +9,52 @@ import {
   getUserFavorites,
 } from "../controllers/books.js";
 import { authenticateToken } from "../middlewares/auth.js";
+import { validateFields } from "../middlewares/errorHandler.js";
 
 const router = express.Router();
 
 /* USERS */
-// post
-router.post("/signup", signupUser);
-router.post("/login", loginUser);
+// --post
+router.post(
+  "/signup",
+  validateFields("body", ["email", "password", "name"]),
+  signupUser
+);
+router.post("/login", validateFields("body", ["email", "password"]), loginUser);
 
 /* BOOKS */
-// get
+// --get
 router.get("/books", getHomePageBooks);
 router.get("/categories", getBookCategoriesList);
 router.get("/books/:categorie", getBooksByCategorie);
-// ** test auth
-router.get("/protected", authenticateToken, (req, res) => {
-  res.json({ message: "Success!", user: (req as any).user });
-});
-router.get("/favorites", authenticateToken, getUserFavorites);
-// post
-router.post("/favorites", authenticateToken, addToFavorites);
-// delete
-router.delete("/favorites", authenticateToken, removeFromFavorites);
+// --post
+router.post(
+  "/favorites",
+  authenticateToken,
+  validateFields("body", ["userId"]),
+  getUserFavorites
+);
+router.post(
+  "/favorites/add",
+  authenticateToken,
+  validateFields("body", [
+    "title",
+    "authors",
+    "publishedDate",
+    "pageCount",
+    "imageLink",
+    "rating",
+    "categories",
+    "userId",
+  ]),
+  addToFavorites
+);
+// --delete
+router.delete(
+  "/favorites",
+  authenticateToken,
+  validateFields("body", ["userId", "bookId", "googleVolumeId"]),
+  removeFromFavorites
+);
 
 export default router;
