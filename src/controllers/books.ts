@@ -12,6 +12,7 @@ import {
 
 // get best seller books (for home page) - ✅
 // get book categories - ✅
+// get user favorites - ✅
 // get a book by a categorie - ✅
 // add a book to favorites - ✅
 // remove a book from favorites - ✅

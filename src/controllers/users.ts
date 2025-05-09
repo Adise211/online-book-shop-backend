@@ -7,10 +7,10 @@ import {
   isPasswordCorrect,
 } from "../utils/auth.utils.js";
 
-// auth: create user
-// auth: get user
-// auth: reset password
-// auth: update profile (user-name, profile photo etc)
+// auth: create user - ✅
+// auth: get user - ✅
+// TODO: auth: reset password
+// TODO: auth: update profile (user-name, profile photo etc)
 // TODO: add sanitizer (DOMPurify)
 
 export async function signupUser(req: Request, res: Response) {

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Book } from "../../types.js";
 
-// TODO: get all favorites by user id
+// get all favorites by user id - ✅
 // add to favorites - ✅
 // remove from favorites - ✅
 
