@@ -4,6 +4,7 @@ import { bookCategories } from "./src/utils/consts.js";
 // system (db)
 type ResultSource = "system" | "external";
 type ResultCodes = 1 | -1;
+export type RequestFieldSource = "body" | "query" | "params";
 export type BookCategories = (typeof bookCategories)[number]; //* turned array to type */
 
 export interface User {
