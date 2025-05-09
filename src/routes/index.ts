@@ -6,24 +6,30 @@ import {
   getBooksByCategorie,
   addToFavorites,
   removeFromFavorites,
+  getUserFavorites,
 } from "../controllers/books.js";
 import { authenticateToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-/* users */
+/* USERS */
+// post
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 
-/* books */
+/* BOOKS */
+// get
 router.get("/books", getHomePageBooks);
 router.get("/categories", getBookCategoriesList);
 router.get("/books/:categorie", getBooksByCategorie);
-// test auth
+// ** test auth
 router.get("/protected", authenticateToken, (req, res) => {
   res.json({ message: "Success!", user: (req as any).user });
 });
+router.get("/favorites", authenticateToken, getUserFavorites);
+// post
 router.post("/favorites", authenticateToken, addToFavorites);
+// delete
 router.delete("/favorites", authenticateToken, removeFromFavorites);
 
 export default router;

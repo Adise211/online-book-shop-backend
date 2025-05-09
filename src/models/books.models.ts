@@ -49,3 +49,13 @@ export async function removeBookFromFavorites(
 
   return deletedBook;
 }
+
+export async function getAllFavorites(userId: number) {
+  const favorites = prisma.favorites.findMany({
+    where: {
+      userId,
+    },
+  });
+
+  return favorites;
+}

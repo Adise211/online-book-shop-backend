@@ -6,6 +6,7 @@ import { isCategorieExist } from "../utils/utilFunc.js";
 import { googleBooksAPIRequest } from "../services/index.js";
 import {
   addBookToFavorites,
+  getAllFavorites,
   removeBookFromFavorites,
 } from "../models/books.models.js";
 
@@ -130,5 +131,31 @@ export async function removeFromFavorites(req: Request, res: Response) {
       };
       res.status(201).json(result);
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error in removeFromFavorites:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function getUserFavorites(req: Request, res: Response) {
+  try {
+    let result: ResponseToClient;
+
+    if (req.body) {
+      const favorites = await getAllFavorites(req.body.userId);
+      result = {
+        Result: {
+          ResultCode: 1,
+          ResultMessage: "",
+          IsError: false,
+          Source: "system",
+        },
+        Data: favorites,
+      };
+      res.status(201).json(result);
+    }
+  } catch (error) {
+    console.error("Error in getUserFavorites:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
