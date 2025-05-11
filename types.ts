@@ -8,7 +8,7 @@ export type RequestFieldSource = "body" | "query" | "params";
 export type BookCategories = (typeof bookCategories)[number]; //* turned array to type */
 
 export interface User {
-  id?: string;
+  id?: number;
   email: string;
   password: string;
   name: string;
@@ -17,7 +17,7 @@ export interface User {
 }
 
 export interface Book {
-  id?: string;
+  id?: number;
   title: string;
   googleVolumeId: string;
   authors: string[];
@@ -29,7 +29,7 @@ export interface Book {
 }
 
 export interface Review {
-  id?: string;
+  id?: number;
   googleVolumeId: string;
   rating: number;
   description: string;
