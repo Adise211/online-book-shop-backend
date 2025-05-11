@@ -24,3 +24,32 @@ export async function createReview(data: Review, userId: number) {
 
   return review;
 }
+
+export async function updateReview(data: Review) {
+  const { id, rating, description, googleVolumeId } = data;
+  const updatedReview = await prisma.reviews.update({
+    where: {
+      id,
+      googleVolumeId,
+    },
+    data: {
+      googleVolumeId,
+      rating,
+      description,
+    },
+  });
+
+  return updatedReview;
+}
+
+export async function deleteReview(data: Review) {
+  const { id, googleVolumeId } = data;
+  const deletedReview = await prisma.reviews.delete({
+    where: {
+      id,
+      googleVolumeId,
+    },
+  });
+
+  return deletedReview;
+}

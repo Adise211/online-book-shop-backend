@@ -10,7 +10,11 @@ import {
 } from "../controllers/books.js";
 import { authenticateToken } from "../middlewares/auth.js";
 import { validateFields } from "../middlewares/errorHandler.js";
-import { createBookReview } from "../controllers/reviews.js";
+import {
+  createBookReview,
+  deleteBookReview,
+  updateBookReview,
+} from "../controllers/reviews.js";
 
 const router = express.Router();
 
@@ -66,6 +70,20 @@ router.post(
   authenticateToken,
   validateFields("body", ["rating", "description", "googleVolumeId"]),
   createBookReview
+);
+//--put
+router.put(
+  "/reviews",
+  authenticateToken,
+  validateFields("body", ["id", "rating", "description", "googleVolumeId"]),
+  updateBookReview
+);
+//delete
+router.delete(
+  "/reviews",
+  authenticateToken,
+  validateFields("body", ["id", "googleVolumeId"]),
+  deleteBookReview
 );
 
 export default router;
