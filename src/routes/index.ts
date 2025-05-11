@@ -78,7 +78,7 @@ router.put(
   validateFields("body", ["id", "rating", "description", "googleVolumeId"]),
   updateBookReview
 );
-//delete
+//--delete
 router.delete(
   "/reviews",
   authenticateToken,
