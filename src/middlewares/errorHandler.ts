@@ -7,7 +7,7 @@ export function validateFields(
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (source && requiredFields.length > 0) {
-      if (req[source]) {
+      if (req[source] || req[source].data) {
         let missingFields: string[] = [];
 
         // Check if required fields exist in the request.source (body, params or query)
