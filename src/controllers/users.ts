@@ -17,26 +17,23 @@ export async function signupUser(req: Request, res: Response) {
   try {
     /* Notice: body treated with type 'any' */
     let result: ResponseToClient;
+    let { email, password, name }: User = req.body.data;
 
-    if (req.body) {
-      let { email, password, name }: User = req.body.data;
-
-      const hashedPassword = await hashPassword(password);
-      if (hashedPassword) {
-        password = hashedPassword;
-        const data = { email, password, name };
-        const response = await createUser(data);
-        result = {
-          Result: {
-            ResultCode: 1,
-            ResultMessage: "",
-            IsError: false,
-            Source: "system",
-          },
-          Data: response,
-        };
-        res.status(201).json(result);
-      }
+    const hashedPassword = await hashPassword(password);
+    if (hashedPassword) {
+      password = hashedPassword;
+      const data = { email, password, name };
+      const response = await createUser(data);
+      result = {
+        Result: {
+          ResultCode: 1,
+          ResultMessage: "",
+          IsError: false,
+          Source: "system",
+        },
+        Data: response,
+      };
+      res.status(201).json(result);
     }
   } catch (error) {
     console.error("Error in signupUser:", error);
@@ -47,42 +44,41 @@ export async function signupUser(req: Request, res: Response) {
 export async function loginUser(req: Request, res: Response) {
   try {
     let result: ResponseToClient;
+    let { email, password }: User = req.body;
 
-    if (req.body) {
-      let { email, password }: User = req.body.data;
+    const user = await findUserByEmail(email);
+    if (!user) {
+      res.status(400).json({ message: "User is not exist" });
+    } else {
+      const isCorrect = await isPasswordCorrect(password, user.password);
+      if (isCorrect) {
+        const token = generateToken({ userId: user.id, email: user.email });
 
-      const user = await findUserByEmail(email);
-
-      if (!user) {
-        res.status(400).json({ message: "User is not exist" });
+        result = {
+          Result: {
+            ResultCode: 1,
+            ResultMessage: "Success in login",
+            IsError: false,
+            Source: "system",
+          },
+          Data: { user, token },
+        };
+        res.status(201).json(result);
       } else {
-        const isCorrect = await isPasswordCorrect(password, user.password);
-        if (isCorrect) {
-          const token = generateToken({ userId: user.id, email: user.email });
-
-          result = {
-            Result: {
-              ResultCode: 1,
-              ResultMessage: "Success in login",
-              IsError: false,
-              Source: "system",
-            },
-            Data: { user, token },
-          };
-          res.status(201).json(result);
-        } else {
-          result = {
-            Result: {
-              ResultCode: -1,
-              ResultMessage: "Incorrect email or password",
-              IsError: true,
-              Source: "system",
-            },
-            Data: {},
-          };
-          res.json(result);
-        }
+        result = {
+          Result: {
+            ResultCode: -1,
+            ResultMessage: "Incorrect email or password",
+            IsError: true,
+            Source: "system",
+          },
+          Data: {},
+        };
+        res.json(result);
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error in loginUser:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }

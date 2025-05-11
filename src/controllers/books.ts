@@ -66,23 +66,21 @@ export async function addToFavorites(req: Request, res: Response) {
   try {
     let result: ResponseToClient;
 
-    if (req.body && req.body.data) {
-      // let book: Book;
-      const book: Book = req.body.data.book;
-      const userId: number = req.body.data.userId;
+    // let book: Book;
+    const book: Book = req.body.data.book;
+    const userId: number = req.body.data.userId;
 
-      const saved = await addBookToFavorites(book, userId);
-      result = {
-        Result: {
-          ResultCode: 1,
-          ResultMessage: "",
-          IsError: false,
-          Source: "system",
-        },
-        Data: saved,
-      };
-      res.status(201).json(result);
-    }
+    const saved = await addBookToFavorites(book, userId);
+    result = {
+      Result: {
+        ResultCode: 1,
+        ResultMessage: "",
+        IsError: false,
+        Source: "system",
+      },
+      Data: saved,
+    };
+    res.status(201).json(result);
   } catch (error) {
     console.error("Error in addBookToFavorites:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -93,22 +91,19 @@ export async function removeFromFavorites(req: Request, res: Response) {
   try {
     let result: ResponseToClient;
 
-    if (req.body && req.body.data) {
-      const { userId, bookId, googleVolumeId } = req.body.data;
-      // TODO: check if field is missing and show error which one
-      await removeBookFromFavorites(userId, bookId, googleVolumeId);
+    const { userId, bookId, googleVolumeId } = req.body.data;
+    await removeBookFromFavorites(userId, bookId, googleVolumeId);
 
-      result = {
-        Result: {
-          ResultCode: 1,
-          ResultMessage: "Removed successfuly!",
-          IsError: false,
-          Source: "system",
-        },
-        Data: [],
-      };
-      res.status(201).json(result);
-    }
+    result = {
+      Result: {
+        ResultCode: 1,
+        ResultMessage: "Removed successfuly!",
+        IsError: false,
+        Source: "system",
+      },
+      Data: [],
+    };
+    res.status(201).json(result);
   } catch (error) {
     console.error("Error in removeFromFavorites:", error);
     res.status(500).json({ message: "Internal server error" });

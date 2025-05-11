@@ -6,8 +6,9 @@ export function validateFields(
   requiredFields: string[]
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (!source && requiredFields.length <= 0) {
+    if (!source || requiredFields.length <= 0) {
       // params to this function are missing
+      res.status(500).json({ message: "Internal server error" });
       throw new Error(
         "Error Handler 'validateFields': params are missing ('source: string' || 'requiredFields: string[]'"
       );
@@ -20,6 +21,18 @@ export function validateFields(
         res
           .status(400)
           .json({ message: `'${source}' in request was not found` });
+      } else if (
+        req[source] &&
+        requiredFields.length > 2 &&
+        !req[source].data
+      ) {
+        // more then 2 fields need to be wrapped with object named 'data'
+        console.error(
+          `Error Handler 'validateFields': fields are not wrapped with 'data' object`
+        );
+        res
+          .status(400)
+          .json({ message: `fields are not wrapped with 'data' object` });
       } else {
         let missingFields: string[] = [];
 
