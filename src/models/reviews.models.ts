@@ -7,9 +7,9 @@ import { Review, User } from "../../types.js";
 
 const prisma = new PrismaClient();
 
-export async function createReview(data: Review, userId: number) {
-  const { rating, description, googleVolumeId } = data;
-  const review = await prisma.reviews.create({
+export async function createReview(reviewData: Review, userId: User["id"]) {
+  const { rating, description, googleVolumeId }: Review = reviewData;
+  const createdReview = await prisma.reviews.create({
     data: {
       googleVolumeId,
       rating,
@@ -22,18 +22,17 @@ export async function createReview(data: Review, userId: number) {
     },
   });
 
-  return review;
+  return createdReview;
 }
 
-export async function updateReview(data: Review) {
-  const { id, rating, description, googleVolumeId } = data;
+export async function updateReview(reviewData: Review) {
+  const { id, rating, description, googleVolumeId } = reviewData;
   const updatedReview = await prisma.reviews.update({
     where: {
       id,
       googleVolumeId,
     },
     data: {
-      googleVolumeId,
       rating,
       description,
     },
@@ -42,8 +41,8 @@ export async function updateReview(data: Review) {
   return updatedReview;
 }
 
-export async function deleteReview(data: Review) {
-  const { id, googleVolumeId } = data;
+export async function deleteReview(reviewData: Review) {
+  const { id, googleVolumeId } = reviewData;
   const deletedReview = await prisma.reviews.delete({
     where: {
       id,

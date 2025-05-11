@@ -14,8 +14,8 @@ export async function createBookReview(req: Request, res: Response) {
   try {
     let result: ResponseToClient;
 
-    const { data, userId } = req.body;
-    const newReview = await createReview(data, userId);
+    const { reviewData, userId } = req.body.data;
+    const newReview = await createReview(reviewData, userId);
     result = {
       Result: {
         ResultCode: 1,

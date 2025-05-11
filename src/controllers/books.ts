@@ -66,9 +66,10 @@ export async function addToFavorites(req: Request, res: Response) {
   try {
     let result: ResponseToClient;
 
-    if (req.body) {
-      const book: Book = req.body.book;
-      const userId: number = req.body.userId;
+    if (req.body && req.body.data) {
+      // let book: Book;
+      const book: Book = req.body.data.book;
+      const userId: number = req.body.data.userId;
 
       const saved = await addBookToFavorites(book, userId);
       result = {
@@ -92,8 +93,8 @@ export async function removeFromFavorites(req: Request, res: Response) {
   try {
     let result: ResponseToClient;
 
-    if (req.body) {
-      const { userId, bookId, googleVolumeId } = req.body;
+    if (req.body && req.body.data) {
+      const { userId, bookId, googleVolumeId } = req.body.data;
       // TODO: check if field is missing and show error which one
       await removeBookFromFavorites(userId, bookId, googleVolumeId);
 

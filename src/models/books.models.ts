@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Book } from "../../types.js";
+import { Book, User } from "../../types.js";
 
 // get all favorites by user id - ✅
 // add to favorites - ✅
@@ -52,7 +52,7 @@ export async function removeBookFromFavorites(
   return deletedBook;
 }
 
-export async function getAllFavorites(userId: number) {
+export async function getAllFavorites(userId: User["id"]) {
   const favorites = prisma.favorites.findMany({
     where: {
       userId,

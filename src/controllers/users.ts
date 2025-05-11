@@ -19,7 +19,7 @@ export async function signupUser(req: Request, res: Response) {
     let result: ResponseToClient;
 
     if (req.body) {
-      let { email, password, name }: User = req.body;
+      let { email, password, name }: User = req.body.data;
 
       const hashedPassword = await hashPassword(password);
       if (hashedPassword) {
@@ -49,7 +49,7 @@ export async function loginUser(req: Request, res: Response) {
     let result: ResponseToClient;
 
     if (req.body) {
-      let { email, password }: User = req.body;
+      let { email, password }: User = req.body.data;
 
       const user = await findUserByEmail(email);
 
