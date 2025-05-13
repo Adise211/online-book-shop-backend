@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ResponseToClient, Book } from "../../types.js";
 import { bookCategories } from "../utils/consts.js";
 import { PARAMETER_IS_REQUIRED } from "../utils/errorMessages.js";
@@ -17,52 +17,82 @@ import {
 // add a book to favorites - ✅
 // remove a book from favorites - ✅
 
-export async function getHomePageBooks(req: Request, res: Response) {
-  const result = await googleBooksAPIRequest("bestseller&orderBy=newest");
-  res.send(result);
+export async function getHomePageBooks(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const result = await googleBooksAPIRequest("bestseller&orderBy=newest");
+    res.send(result);
+  } catch (error) {
+    // handle in appErrorHandler midddleware
+    next(error);
+  }
 }
 
-export async function getBookCategoriesList(req: Request, res: Response) {
-  let result: ResponseToClient;
-
-  result = {
-    Result: {
-      ResultCode: 1,
-      ResultMessage: "",
-      IsError: false,
-      Source: "system",
-    },
-    Data: bookCategories,
-  };
-
-  res.send(result);
-}
-
-export async function getBooksByCategorie(req: Request, res: Response) {
-  let result: ResponseToClient;
-
-  const { categorie } = req.params;
-  if (categorie && isCategorieExist(categorie)) {
-    result = await googleBooksAPIRequest(`subject:${categorie}`);
-  } else {
-    const resultMsg = !isCategorieExist(categorie)
-      ? `Categorie '${categorie}' is not exist`
-      : `${PARAMETER_IS_REQUIRED}: categorie`;
+export async function getBookCategoriesList(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    let result: ResponseToClient;
 
     result = {
       Result: {
-        ResultCode: -1,
-        ResultMessage: resultMsg,
-        IsError: true,
+        ResultCode: 1,
+        ResultMessage: "",
+        IsError: false,
         Source: "system",
       },
-      Data: [],
+      Data: bookCategories,
     };
+
+    res.send(result);
+  } catch (error) {
+    // handle in appErrorHandler midddleware
+    next(error);
   }
-  res.send(result);
 }
 
-export async function addToFavorites(req: Request, res: Response) {
+export async function getBooksByCategorie(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    let result: ResponseToClient;
+
+    const { categorie } = req.params;
+    if (categorie && isCategorieExist(categorie)) {
+      result = await googleBooksAPIRequest(`subject:${categorie}`);
+    } else {
+      const resultMsg = !isCategorieExist(categorie)
+        ? `Categorie '${categorie}' is not exist`
+        : `${PARAMETER_IS_REQUIRED}: categorie`;
+
+      result = {
+        Result: {
+          ResultCode: -1,
+          ResultMessage: resultMsg,
+          IsError: true,
+          Source: "system",
+        },
+        Data: [],
+      };
+    }
+    res.send(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function addToFavorites(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     let result: ResponseToClient;
 
@@ -82,12 +112,16 @@ export async function addToFavorites(req: Request, res: Response) {
     };
     res.status(201).json(result);
   } catch (error) {
-    console.error("Error in addBookToFavorites:", error);
-    res.status(500).json({ message: "Internal server error" });
+    // handle in appErrorHandler midddleware
+    next(error);
   }
 }
 
-export async function removeFromFavorites(req: Request, res: Response) {
+export async function removeFromFavorites(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     let result: ResponseToClient;
 
@@ -105,12 +139,16 @@ export async function removeFromFavorites(req: Request, res: Response) {
     };
     res.status(201).json(result);
   } catch (error) {
-    console.error("Error in removeFromFavorites:", error);
-    res.status(500).json({ message: "Internal server error" });
+    // handle in appErrorHandler midddleware
+    next(error);
   }
 }
 
-export async function getUserFavorites(req: Request, res: Response) {
+export async function getUserFavorites(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     let result: ResponseToClient;
 
@@ -128,7 +166,7 @@ export async function getUserFavorites(req: Request, res: Response) {
       res.status(201).json(result);
     }
   } catch (error) {
-    console.error("Error in getUserFavorites:", error);
-    res.status(500).json({ message: "Internal server error" });
+    // handle in appErrorHandler midddleware
+    next(error);
   }
 }

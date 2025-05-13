@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { createUser, findUserByEmail } from "../models/users.models.js";
 import { ResponseToClient, User } from "../../types.js";
 import {
@@ -13,7 +13,11 @@ import {
 // TODO: auth: update profile (user-name, profile photo etc)
 // TODO: add sanitizer (DOMPurify)
 
-export async function signupUser(req: Request, res: Response) {
+export async function signupUser(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     /* Notice: body treated with type 'any' */
     let result: ResponseToClient;
@@ -36,12 +40,16 @@ export async function signupUser(req: Request, res: Response) {
       res.status(201).json(result);
     }
   } catch (error) {
-    console.error("Error in signupUser:", error);
-    res.status(500).json({ message: "Internal server error" });
+    // handle in appErrorHandler midddleware
+    next(error);
   }
 }
 
-export async function loginUser(req: Request, res: Response) {
+export async function loginUser(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     let result: ResponseToClient;
     let { email, password }: User = req.body;
@@ -78,7 +86,7 @@ export async function loginUser(req: Request, res: Response) {
       }
     }
   } catch (error) {
-    console.error("Error in loginUser:", error);
-    res.status(500).json({ message: "Internal server error" });
+    // handle in appErrorHandler midddleware
+    next(error);
   }
 }

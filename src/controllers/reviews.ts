@@ -10,7 +10,11 @@ import {
 // update review
 // delete review
 
-export async function createBookReview(req: Request, res: Response) {
+export async function createBookReview(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     let result: ResponseToClient;
 
@@ -27,8 +31,7 @@ export async function createBookReview(req: Request, res: Response) {
     };
     res.status(201).json(result);
   } catch (error) {
-    console.error("Error in createBookReview:", error);
-    res.status(500).json({ message: "Internal server error" });
+    next(error);
   }
 }
 
@@ -58,7 +61,11 @@ export async function updateBookReview(
   }
 }
 
-export async function deleteBookReview(req: Request, res: Response) {
+export async function deleteBookReview(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     let result: ResponseToClient;
     await deleteReview(req.body.data);
@@ -73,7 +80,6 @@ export async function deleteBookReview(req: Request, res: Response) {
     };
     res.status(201).json(result);
   } catch (error) {
-    console.error("Error in deleteBookReview:", error);
-    res.status(500).json({ message: "Internal server error" });
+    next(error);
   }
 }
