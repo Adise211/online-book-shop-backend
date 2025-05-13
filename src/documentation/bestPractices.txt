@@ -1,0 +1,15 @@
+## Centralized Error Handling ##
+
+1. DRY principle (Don’t Repeat Yourself):
+Avoid repeating try/catch logic in every database function.
+
+2. Consistency:
+You return the same type/format of error response across the app (e.g., for logging, or API error codes).
+
+3. Improved Debugging:
+You can log or reformat errors in one place before they bubble up.
+
+4. Easier Maintenance:
+Changes in error formatting or logging only happen in one location.
+
+Examples:  function prismaErrorHandler(){}
