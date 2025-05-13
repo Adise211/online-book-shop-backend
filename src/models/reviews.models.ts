@@ -1,5 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { Review, User } from "../../types.js";
+import { prismaErrorHandler } from "../utils/utilFunc.js";
 
 // TODO: get reviews by book id
 // TODO: create a review
@@ -26,19 +27,24 @@ export async function createReview(reviewData: Review, userId: User["id"]) {
 }
 
 export async function updateReview(reviewData: Review) {
-  const { id, rating, description, googleVolumeId } = reviewData;
-  const updatedReview = await prisma.reviews.update({
-    where: {
-      id,
-      googleVolumeId,
-    },
-    data: {
-      rating,
-      description,
-    },
-  });
+  try {
+    const { id, rating, description, googleVolumeId } = reviewData;
+    const updatedReview = await prisma.reviews.update({
+      where: {
+        id,
+        googleVolumeId,
+      },
+      data: {
+        rating,
+        description,
+      },
+    });
 
-  return updatedReview;
+    return updatedReview;
+  } catch (error) {
+    // this function handles prisma errors in one place
+    throw prismaErrorHandler(error);
+  }
 }
 
 export async function deleteReview(reviewData: Review) {

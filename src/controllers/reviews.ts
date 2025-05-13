@@ -36,19 +36,36 @@ export async function updateBookReview(req: Request, res: Response) {
   try {
     let result: ResponseToClient;
     const updatedReview = await updateReview(req.body.data);
-    result = {
-      Result: {
-        ResultCode: 1,
-        ResultMessage: "Updated successfuly!",
-        IsError: false,
-        Source: "system",
-      },
-      Data: updatedReview,
-    };
-    res.status(201).json(result);
+
+    if (updatedReview) {
+      result = {
+        Result: {
+          ResultCode: 1,
+          ResultMessage: "Updated successfuly!",
+          IsError: false,
+          Source: "system",
+        },
+        Data: updatedReview,
+      };
+      res.status(201).json(result);
+    }
   } catch (error) {
+    let message: string = "Internal server error";
+    let source: string = "system";
+
+    if (error instanceof Error) {
+      if (error.message) {
+        message = error.message;
+      }
+      if ("cause" in error && typeof error.cause === "string") {
+        source = error.cause;
+      }
+    }
+
+    // show error log
     console.error("Error in updateBookReview:", error);
-    res.status(500).json({ message: "Internal server error" });
+    // send errror message and source
+    res.status(500).json({ message, source });
   }
 }
 
