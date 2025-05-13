@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { RequestFieldSource } from "../../types.js";
+import { RequestFieldSource, Result } from "../../types.js";
+import { prismaErrorHandler } from "../utils/utilFunc.js";
 
 export function validateFields(
   source: RequestFieldSource,
@@ -54,4 +55,30 @@ export function validateFields(
 
     next();
   };
+}
+
+export function appErrorHandler(
+  error: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  console.error("Error caught by middleware: ---------------", error);
+  // default result
+  const result: Result<object> = {
+    success: false,
+    message: error.message,
+    source: "system",
+  };
+
+  const prismaError = prismaErrorHandler(error);
+  if (prismaError.isPrismaError) {
+    // prisma errors
+    const { code, message } = prismaError;
+    result.message = message;
+    result.source = "prisma";
+    res.status(code).json(result);
+  } else {
+    res.status(500).json(result);
+  }
 }

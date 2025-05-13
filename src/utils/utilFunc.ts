@@ -9,23 +9,29 @@ export function isCategorieExist(categorie: string | undefined) {
 
 export function prismaErrorHandler(error: object | unknown) {
   let customErrorMessage: string = GENERAL_ERROR;
+  let errorCode: number = 500;
+  let isPrismaError: boolean = true;
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     // https://www.prisma.io/docs/orm/reference/error-reference#prismaclientknownrequesterror
     if (error.code === "P2002") {
-      console.log(
-        "There is a unique constraint violation, a new user cannot be created with this email"
-      );
-      customErrorMessage =
-        "There is a unique constraint violation, a new user cannot be created with this email";
+      customErrorMessage = "Unique constraint violation";
     }
+    errorCode = 409;
   } else if (error instanceof Prisma.PrismaClientValidationError) {
     const prismaErrMsg: string = error.message;
     const startIndex = prismaErrMsg.indexOf("Argument");
     const slicedString = prismaErrMsg.slice(startIndex, prismaErrMsg.length);
 
     customErrorMessage = slicedString;
+    errorCode = 400;
+  } else {
+    isPrismaError = false;
   }
 
-  return new Error(customErrorMessage, { cause: "prisma" });
+  return {
+    code: errorCode,
+    message: customErrorMessage,
+    isPrismaError,
+  };
 }

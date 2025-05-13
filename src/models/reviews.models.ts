@@ -27,24 +27,19 @@ export async function createReview(reviewData: Review, userId: User["id"]) {
 }
 
 export async function updateReview(reviewData: Review) {
-  try {
-    const { id, rating, description, googleVolumeId } = reviewData;
-    const updatedReview = await prisma.reviews.update({
-      where: {
-        id,
-        googleVolumeId,
-      },
-      data: {
-        rating,
-        description,
-      },
-    });
+  const { id, rating, description, googleVolumeId } = reviewData;
+  const updatedReview = await prisma.reviews.update({
+    where: {
+      id,
+      googleVolumeId,
+    },
+    data: {
+      rating,
+      description,
+    },
+  });
 
-    return updatedReview;
-  } catch (error) {
-    // this function handles prisma errors in one place
-    throw prismaErrorHandler(error);
-  }
+  return updatedReview;
 }
 
 export async function deleteReview(reviewData: Review) {

@@ -6,7 +6,7 @@ type ResultSource = "system" | "external" | "prisma";
 type ResultCodes = 1 | -1;
 export type Result<T> =
   | { success: true; data: T }
-  | { success: false; error: string; source: ResultSource };
+  | { success: false; message: string; source: ResultSource };
 export type RequestFieldSource = "body" | "query" | "params";
 
 export type BookCategories = (typeof bookCategories)[number]; //* turned array to type */

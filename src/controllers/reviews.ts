@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ResponseToClient, Review } from "../../types.js";
 import {
   createReview,
@@ -32,7 +32,11 @@ export async function createBookReview(req: Request, res: Response) {
   }
 }
 
-export async function updateBookReview(req: Request, res: Response) {
+export async function updateBookReview(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
     let result: ResponseToClient;
     const updatedReview = await updateReview(req.body.data);
@@ -50,22 +54,7 @@ export async function updateBookReview(req: Request, res: Response) {
       res.status(201).json(result);
     }
   } catch (error) {
-    let message: string = "Internal server error";
-    let source: string = "system";
-
-    if (error instanceof Error) {
-      if (error.message) {
-        message = error.message;
-      }
-      if ("cause" in error && typeof error.cause === "string") {
-        source = error.cause;
-      }
-    }
-
-    // show error log
-    console.error("Error in updateBookReview:", error);
-    // send errror message and source
-    res.status(500).json({ message, source });
+    next(error);
   }
 }
 

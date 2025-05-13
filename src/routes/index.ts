@@ -9,7 +9,7 @@ import {
   getUserFavorites,
 } from "../controllers/books.js";
 import { authenticateToken } from "../middlewares/auth.js";
-import { validateFields } from "../middlewares/errorHandler.js";
+import { validateFields } from "../middlewares/errorHandlers.js";
 import {
   createBookReview,
   deleteBookReview,
