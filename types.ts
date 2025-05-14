@@ -4,21 +4,21 @@ import { bookCategories } from "./src/utils/consts.js";
 // system (db)
 type ResultSource = "system" | "external" | "prisma";
 type ResultCodes = 1 | -1;
+export type RequestFieldSource = "body" | "query" | "params";
 export type Result<T> =
   | { success: true; data: T }
-  | { success: false; message: string; source: ResultSource };
-export type RequestFieldSource = "body" | "query" | "params";
+  | { success: false; message: string; source: ResultSource | string };
 
 export type BookCategories = (typeof bookCategories)[number]; //* turned array to type */
 
-export interface User {
-  id?: number;
-  email: string;
-  password: string;
-  name: string;
-  favorites?: Book[];
-  reviews?: Review[];
-}
+// export interface User {
+//   id?: number;
+//   email: string;
+//   password: string;
+//   name: string;
+//   favorites?: Book[];
+//   reviews?: Review[];
+// }
 
 export interface Book {
   id?: number;
@@ -32,15 +32,15 @@ export interface Book {
   categories: BookCategories[];
 }
 
-export interface Review {
-  id?: number;
-  googleVolumeId: string;
-  rating: number;
-  description: string;
-  createdBy: User;
-  date: string;
-  userId: number;
-}
+// export interface Review {
+//   id?: number;
+//   googleVolumeId: string;
+//   rating: number;
+//   description: string;
+//   createdBy: User;
+//   date: string;
+//   userId: number;
+// }
 
 export interface ResponseToClient {
   Result: {
