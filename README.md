@@ -2,6 +2,9 @@
 
 An online book shop backend where users can search for books and save them to their favorites.
 
+> ❗ **Note:** Purchasing books is **not supported**.  
+> This app is for **educational and practice purposes only**.
+
 ## 🚀 Features
 
 - 🔍 Search for books
@@ -38,10 +41,12 @@ Create a .env file in the root directory and add the following:
 ```bash
 DATABASE_URL=your_database_url
 JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=1h
 ```
 
 > Replace your_database_url with your actual database connection string (e.g., PostgreSQL or MySQL).<br/>
 > Replace your_jwt_secret with a secure secret key for JWT.
+> Ask me for the url and secret if you need mine.<br/>
 
 ### 4. Run Prisma Migrations
 
@@ -49,7 +54,7 @@ JWT_SECRET=your_jwt_secret
 
 ### 5. Start the Development Server
 
-`$ npm run dev`
+`$ npm start`
 
 Your server will start on the configured port (http://localhost:3030).
 
