@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { RequestFieldSource, Result } from "../../types.js";
 import { prismaErrorHandler } from "../utils/utilFunc.js";
+import { AppError } from "../utils/utilErrors.js";
 
 export function validateFields(
   source: RequestFieldSource,
@@ -78,6 +79,10 @@ export function appErrorHandler(
     result.message = message;
     result.source = "prisma";
     res.status(code).json(result);
+  } else if (error instanceof AppError) {
+    result.message = error.message;
+    result.source = error.source;
+    return res.status(error.statusCode).json(result);
   } else {
     res.status(500).json(result);
   }
