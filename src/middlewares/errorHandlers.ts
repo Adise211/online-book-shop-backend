@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { RequestFieldSource, Result } from "../../types.js";
+import { RequestFieldSource, Result } from "../types.js";
 import { prismaErrorHandler } from "../utils/utilFunc.js";
 import { AppError } from "../utils/utilErrors.js";
 

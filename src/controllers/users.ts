@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Users } from "@prisma/client";
 import { createUser, findUserByEmail } from "../models/users.models.js";
-import { Result } from "../../types.js";
+import { Result } from "../types.js";
 import {
   generateToken,
   hashPassword,

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Book, BookCategories, Result } from "../../types.js";
+import { Book, BookCategories, Result } from "../types.js";
 import { bookCategories } from "../utils/consts.js";
 import { isCategorieExist } from "../utils/utilFunc.js";
 import { googleBooksAPIRequest } from "../services/index.js";
