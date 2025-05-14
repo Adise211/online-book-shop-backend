@@ -51,8 +51,8 @@ JWT_SECRET=your_jwt_secret
 
 `$ npm run dev`
 
-Your server will start on the configured port (default is usually http://localhost:3000).
+Your server will start on the configured port (http://localhost:3030).
 
 ## 📝 License
 
-> This project is open source and available under the MIT License.
+This project is open source and available under the MIT License.
