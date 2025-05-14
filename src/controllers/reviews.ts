@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { ResponseToClient, Review } from "../../types.js";
+import { Result } from "../../types.js";
 import {
   createReview,
   deleteReview,
   updateReview,
 } from "../models/reviews.models.js";
+import { Codes } from "../utils/utilErrors.js";
+import { Reviews } from "@prisma/client";
 // get reviews
 // create review
 // update review
@@ -16,20 +18,13 @@ export async function createBookReview(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
-
     const { reviewData, userId } = req.body.data;
     const newReview = await createReview(reviewData, userId);
-    result = {
-      Result: {
-        ResultCode: 1,
-        ResultMessage: "Created successfuly!",
-        IsError: false,
-        Source: "system",
-      },
-      Data: newReview,
+    const result: Result<Reviews> = {
+      success: true,
+      data: newReview,
     };
-    res.status(201).json(result);
+    res.status(Codes.Success.Created).json(result);
   } catch (error) {
     next(error);
   }
@@ -41,20 +36,15 @@ export async function updateBookReview(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
     const updatedReview = await updateReview(req.body.data);
 
     if (updatedReview) {
-      result = {
-        Result: {
-          ResultCode: 1,
-          ResultMessage: "Updated successfuly!",
-          IsError: false,
-          Source: "system",
-        },
-        Data: updatedReview,
+      const result: Result<Reviews> = {
+        success: true,
+        data: updatedReview,
       };
-      res.status(201).json(result);
+
+      res.status(Codes.Success.Created).json(result);
     }
   } catch (error) {
     next(error);
@@ -67,18 +57,12 @@ export async function deleteBookReview(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
     await deleteReview(req.body.data);
-    result = {
-      Result: {
-        ResultCode: 1,
-        ResultMessage: "Removed successfuly!",
-        IsError: false,
-        Source: "system",
-      },
-      Data: [],
+    const result: Result<object> = {
+      success: true,
+      data: {},
     };
-    res.status(201).json(result);
+    res.status(Codes.Success.Ok).json(result);
   } catch (error) {
     next(error);
   }

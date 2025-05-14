@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from "express";
+import { Users } from "@prisma/client";
 import { createUser, findUserByEmail } from "../models/users.models.js";
-import { ResponseToClient, User } from "../../types.js";
+import { Result } from "../../types.js";
 import {
   generateToken,
   hashPassword,
   isPasswordCorrect,
 } from "../utils/auth.utils.js";
+import { Codes, AppError } from "../utils/utilErrors.js";
 
 // auth: create user - ✅
 // auth: get user - ✅
@@ -20,24 +22,17 @@ export async function signupUser(
 ) {
   try {
     /* Notice: body treated with type 'any' */
-    let result: ResponseToClient;
-    let { email, password, name }: User = req.body.data;
+    let { email, password, name } = req.body.data;
 
     const hashedPassword = await hashPassword(password);
     if (hashedPassword) {
       password = hashedPassword;
-      const data = { email, password, name };
-      const response = await createUser(data);
-      result = {
-        Result: {
-          ResultCode: 1,
-          ResultMessage: "",
-          IsError: false,
-          Source: "system",
-        },
-        Data: response,
+      const response = await createUser({ email, password, name });
+      const result: Result<Users> = {
+        success: true,
+        data: response,
       };
-      res.status(201).json(result);
+      res.status(Codes.Success.Created).json(result);
     }
   } catch (error) {
     // handle in appErrorHandler midddleware
@@ -51,38 +46,29 @@ export async function loginUser(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
-    let { email, password }: User = req.body;
+    let { email, password }: Users = req.body;
 
     const user = await findUserByEmail(email);
+    // user is not exist
     if (!user) {
-      res.status(400).json({ message: "User is not exist" });
+      throw new AppError("User is not exist", Codes.Client.Not_Found);
     } else {
+      // user exist - check if password is correct
       const isCorrect = await isPasswordCorrect(password, user.password);
       if (isCorrect) {
+        // password is correct - send token
         const token = generateToken({ userId: user.id, email: user.email });
-
-        result = {
-          Result: {
-            ResultCode: 1,
-            ResultMessage: "Success in login",
-            IsError: false,
-            Source: "system",
-          },
-          Data: { user, token },
+        const successResult: Result<object> = {
+          success: true,
+          data: { user, token },
         };
-        res.status(201).json(result);
+        res.status(Codes.Success.Created).json(successResult);
       } else {
-        result = {
-          Result: {
-            ResultCode: -1,
-            ResultMessage: "Incorrect email or password",
-            IsError: true,
-            Source: "system",
-          },
-          Data: {},
-        };
-        res.json(result);
+        // password is incorrect
+        throw new AppError(
+          "Incorrect email or password",
+          Codes.Client.Not_Found
+        );
       }
     }
   } catch (error) {

@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { ResponseToClient, Book } from "../../types.js";
+import { Book, BookCategories, Result } from "../../types.js";
 import { bookCategories } from "../utils/consts.js";
-import { PARAMETER_IS_REQUIRED } from "../utils/errorMessages.js";
 import { isCategorieExist } from "../utils/utilFunc.js";
 import { googleBooksAPIRequest } from "../services/index.js";
 import {
@@ -9,6 +8,8 @@ import {
   getAllFavorites,
   removeBookFromFavorites,
 } from "../models/books.models.js";
+import { AppError, Codes } from "../utils/utilErrors.js";
+import { Favorites } from "@prisma/client";
 
 // get best seller books (for home page) - ✅
 // get book categories - ✅
@@ -23,8 +24,12 @@ export async function getHomePageBooks(
   next: NextFunction
 ) {
   try {
-    const result = await googleBooksAPIRequest("bestseller&orderBy=newest");
-    res.send(result);
+    const response = await googleBooksAPIRequest("bestseller&orderBy=newest");
+    const result: Result<object> = {
+      success: true,
+      data: response,
+    };
+    res.status(Codes.Success.Ok).json(result);
   } catch (error) {
     // handle in appErrorHandler midddleware
     next(error);
@@ -37,19 +42,11 @@ export async function getBookCategoriesList(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
-
-    result = {
-      Result: {
-        ResultCode: 1,
-        ResultMessage: "",
-        IsError: false,
-        Source: "system",
-      },
-      Data: bookCategories,
+    const result: Result<object> = {
+      success: true,
+      data: bookCategories,
     };
-
-    res.send(result);
+    res.status(Codes.Success.Ok).json(result);
   } catch (error) {
     // handle in appErrorHandler midddleware
     next(error);
@@ -62,27 +59,20 @@ export async function getBooksByCategorie(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
-
     const { categorie } = req.params;
     if (categorie && isCategorieExist(categorie)) {
-      result = await googleBooksAPIRequest(`subject:${categorie}`);
-    } else {
-      const resultMsg = !isCategorieExist(categorie)
-        ? `Categorie '${categorie}' is not exist`
-        : `${PARAMETER_IS_REQUIRED}: categorie`;
-
-      result = {
-        Result: {
-          ResultCode: -1,
-          ResultMessage: resultMsg,
-          IsError: true,
-          Source: "system",
-        },
-        Data: [],
+      const response = await googleBooksAPIRequest(`subject:${categorie}`);
+      const result: Result<object> = {
+        success: true,
+        data: response,
       };
+      res.status(Codes.Success.Ok).json(result);
+    } else {
+      throw new AppError(
+        `Categorie '${categorie}' is not exist`,
+        Codes.Client.Bad_Request
+      );
     }
-    res.send(result);
   } catch (error) {
     next(error);
   }
@@ -94,23 +84,15 @@ export async function addToFavorites(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
-
-    // let book: Book;
     const book: Book = req.body.data.book;
     const userId: number = req.body.data.userId;
 
     const saved = await addBookToFavorites(book, userId);
-    result = {
-      Result: {
-        ResultCode: 1,
-        ResultMessage: "",
-        IsError: false,
-        Source: "system",
-      },
-      Data: saved,
+    const result: Result<Favorites> = {
+      success: true,
+      data: saved,
     };
-    res.status(201).json(result);
+    res.status(Codes.Success.Created).json(result);
   } catch (error) {
     // handle in appErrorHandler midddleware
     next(error);
@@ -123,21 +105,13 @@ export async function removeFromFavorites(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
-
     const { userId, bookId, googleVolumeId } = req.body.data;
     await removeBookFromFavorites(userId, bookId, googleVolumeId);
-
-    result = {
-      Result: {
-        ResultCode: 1,
-        ResultMessage: "Removed successfuly!",
-        IsError: false,
-        Source: "system",
-      },
-      Data: [],
+    const result: Result<object> = {
+      success: true,
+      data: {},
     };
-    res.status(201).json(result);
+    res.status(Codes.Success.Ok).json(result);
   } catch (error) {
     // handle in appErrorHandler midddleware
     next(error);
@@ -150,21 +124,12 @@ export async function getUserFavorites(
   next: NextFunction
 ) {
   try {
-    let result: ResponseToClient;
-
-    if (req.body) {
-      const favorites = await getAllFavorites(req.body.userId);
-      result = {
-        Result: {
-          ResultCode: 1,
-          ResultMessage: "",
-          IsError: false,
-          Source: "system",
-        },
-        Data: favorites,
-      };
-      res.status(201).json(result);
-    }
+    const favorites = await getAllFavorites(req.body.userId);
+    const result: Result<Favorites[]> = {
+      success: true,
+      data: favorites,
+    };
+    res.status(Codes.Success.Ok).json(result);
   } catch (error) {
     // handle in appErrorHandler midddleware
     next(error);
