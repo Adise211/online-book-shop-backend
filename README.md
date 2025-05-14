@@ -40,7 +40,7 @@ DATABASE_URL=your_database_url
 JWT_SECRET=your_jwt_secret
 ```
 
-> Replace your_database_url with your actual database connection string (e.g., PostgreSQL or MySQL).
+> Replace your_database_url with your actual database connection string (e.g., PostgreSQL or MySQL).<br/>
 > Replace your_jwt_secret with a secure secret key for JWT.
 
 ### 4. Run Prisma Migrations
