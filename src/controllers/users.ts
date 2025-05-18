@@ -7,6 +7,7 @@ import {
   generateRefreshToken,
   hashPassword,
   isPasswordCorrect,
+  verifyRefreshToken,
 } from "../utils/utilAuth.js";
 import { Codes, AppError } from "../utils/utilErrors.js";
 
@@ -87,6 +88,54 @@ export async function loginUser(
         );
       }
     }
+  } catch (error) {
+    // handle in appErrorHandler midddleware
+    next(error);
+  }
+}
+
+export async function refreshToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const cookieName = process.env.COOKIE_NAME_FOR_TOKEN as string;
+    const token = req.cookies[cookieName];
+
+    if (!token) {
+      throw new AppError("No refresh token", Codes.Client.Unauthorized);
+    }
+    const decoded = verifyRefreshToken(token);
+    const newAccessToken = generateAccessToken({ userId: decoded.userId });
+
+    const successResult: Result<object> = {
+      success: true,
+      data: { accessToken: newAccessToken },
+    };
+    res.status(Codes.Success.Created).json(successResult);
+  } catch (error) {
+    // handle in appErrorHandler midddleware
+    next(error);
+  }
+}
+
+export async function logout(req: Request, res: Response, next: NextFunction) {
+  try {
+    const cookieName = process.env.COOKIE_NAME_FOR_TOKEN as string;
+    // clear refresh token from cookie
+    res.clearCookie(cookieName, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    // send success result
+    const successResult: Result<object> = {
+      success: true,
+      data: {},
+    };
+    res.status(Codes.Success.Created).json(successResult);
+    // res.status(Codes.Success.Ok).json({ message: "Logged out successfully" });
   } catch (error) {
     // handle in appErrorHandler midddleware
     next(error);
