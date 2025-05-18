@@ -1,5 +1,10 @@
 import express from "express";
-import { signupUser, loginUser } from "../controllers/users.js";
+import {
+  signupUser,
+  loginUser,
+  logout,
+  refreshToken,
+} from "../controllers/users.js";
 import {
   getHomePageBooks,
   getBookCategoriesList,
@@ -26,6 +31,8 @@ router.post(
   signupUser
 );
 router.post("/login", validateFields("body", ["email", "password"]), loginUser);
+router.post("/logout", authenticateToken, logout);
+router.post("/refresh", refreshToken);
 
 /* BOOKS */
 // --get

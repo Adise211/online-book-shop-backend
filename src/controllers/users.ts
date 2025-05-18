@@ -107,7 +107,10 @@ export async function refreshToken(
       throw new AppError("No refresh token", Codes.Client.Unauthorized);
     }
     const decoded = verifyRefreshToken(token);
-    const newAccessToken = generateAccessToken({ userId: decoded.userId });
+    const newAccessToken = generateAccessToken({
+      userId: decoded.userId,
+      email: decoded.email,
+    });
 
     const successResult: Result<object> = {
       success: true,
