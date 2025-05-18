@@ -68,7 +68,7 @@ export async function loginUser(
         const cookieName = process.env.COOKIE_NAME_FOR_TOKEN as string;
         // set refresh token in cookie
         res.cookie(cookieName, refreshToken, {
-          httpOnly: true,
+          httpOnly: true, // accessible only by the web server
           secure: process.env.NODE_ENV === "production", // HTTPS only in production
           sameSite: "strict",
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
