@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
-import { GENERAL_ERROR } from "./errorMessages.js";
-import { bookCategories } from "./consts.js";
+import { GENERAL_ERROR } from "./errorMsgs.utils.js";
+import { bookCategories } from "./consts.utils.js";
 
 export function isCategorieExist(categorie: string | undefined) {
   const asArrOfStrings = bookCategories as readonly string[];

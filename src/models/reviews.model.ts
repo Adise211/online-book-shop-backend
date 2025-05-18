@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma } from "@prisma/client";
 import { Review, User } from "../../types.js";
-import { prismaErrorHandler } from "../utils/utilFunc.js";
+import { prismaErrorHandler } from "../utils/func.utils.js";
 
 // TODO: get reviews by book id
 // TODO: create a review

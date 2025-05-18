@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "../utils/utilAuth.js";
+import { verifyAccessToken } from "../utils/auth.utils.js";
 // authenticate user (email & password) - ✅
 // authorization (token) - ✅
 

@@ -8,8 +8,8 @@ import {
   hashPassword,
   isPasswordCorrect,
   verifyRefreshToken,
-} from "../utils/utilAuth.js";
-import { Codes, AppError } from "../utils/utilErrors.js";
+} from "../utils/auth.utils.js";
+import { Codes, AppError } from "../utils/errors.utils.js";
 
 // auth: create user - ✅
 // auth: get user - ✅

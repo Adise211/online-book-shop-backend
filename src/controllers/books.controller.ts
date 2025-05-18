@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { Book, BookCategories, Result } from "../types.js";
-import { bookCategories } from "../utils/consts.js";
-import { isCategorieExist } from "../utils/utilFunc.js";
-import { googleBooksAPIRequest } from "../services/index.js";
+import { bookCategories } from "../utils/consts.utils.js";
+import { isCategorieExist } from "../utils/func.utils.js";
+import { googleBooksAPIRequest } from "../services/index.service.js";
 import {
   addBookToFavorites,
   getAllFavorites,
   removeBookFromFavorites,
 } from "../models/books.model.js";
-import { AppError, Codes } from "../utils/utilErrors.js";
+import { AppError, Codes } from "../utils/errors.utils.js";
 import { Favorites } from "@prisma/client";
 
 // get best seller books (for home page) - ✅
