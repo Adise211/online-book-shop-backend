@@ -4,7 +4,7 @@ import {
   loginUser,
   logout,
   refreshToken,
-} from "../controllers/users.js";
+} from "../controllers/users.controller.js";
 import {
   getHomePageBooks,
   getBookCategoriesList,
@@ -12,14 +12,14 @@ import {
   addToFavorites,
   removeFromFavorites,
   getUserFavorites,
-} from "../controllers/books.js";
+} from "../controllers/books.controller.js";
 import { authenticateToken } from "../middlewares/auth.js";
 import { validateFields } from "../middlewares/errorHandlers.js";
 import {
   createBookReview,
   deleteBookReview,
   updateBookReview,
-} from "../controllers/reviews.js";
+} from "../controllers/reviews.controller.js";
 
 const router = express.Router();
 
