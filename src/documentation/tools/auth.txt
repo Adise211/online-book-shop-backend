@@ -4,14 +4,28 @@ Email & Password
 
 Tutorial - https://www.youtube.com/watch?v=Ud5xKCYQTjM
 
+1. Encrypt user's password after signup
+2. Save the encrypted password in DB
+3. Verify password when user login
+
+
 ---------------------------------------
+
 
 ## Authorization - using JWT ##
 
 JWT - Json Web Tokens
 Tutorial - https://www.youtube.com/watch?v=7Q17ubqLfaM&t=580s
 
+1. Create access token and refresh token
+2. Store refresh token in browser cookie (secured)
+** Cookies are automatically sent by the browser with every request 
+(you don't need to attach them manually in the frontend) **
+3. Delete refresh token from cookie when logout
+
+
 ---------------------------------------
+
 
 ## Generate secret string ##
 
