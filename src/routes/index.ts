@@ -13,8 +13,8 @@ import {
   removeFromFavorites,
   getUserFavorites,
 } from "../controllers/books.controller.js";
-import { authenticateToken } from "../middlewares/auth.js";
-import { validateFields } from "../middlewares/errorHandlers.js";
+import { authenticateToken } from "../middlewares/auth.middleware.js";
+import { validateFields } from "../middlewares/errorHandlers.middleware.js";
 import {
   createBookReview,
   deleteBookReview,
