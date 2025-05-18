@@ -1,6 +1,4 @@
-import { PrismaClient, Prisma } from "@prisma/client";
-import { Review, User } from "../../types.js";
-import { prismaErrorHandler } from "../utils/func.utils.js";
+import { PrismaClient, Reviews } from "@prisma/client";
 
 // TODO: get reviews by book id
 // TODO: create a review
@@ -8,8 +6,8 @@ import { prismaErrorHandler } from "../utils/func.utils.js";
 
 const prisma = new PrismaClient();
 
-export async function createReview(reviewData: Review, userId: User["id"]) {
-  const { rating, description, googleVolumeId }: Review = reviewData;
+export async function createReview(reviewData: Reviews, userId: number) {
+  const { rating, description, googleVolumeId }: Reviews = reviewData;
   const createdReview = await prisma.reviews.create({
     data: {
       googleVolumeId,
@@ -26,7 +24,7 @@ export async function createReview(reviewData: Review, userId: User["id"]) {
   return createdReview;
 }
 
-export async function updateReview(reviewData: Review) {
+export async function updateReview(reviewData: Reviews) {
   const { id, rating, description, googleVolumeId } = reviewData;
   const updatedReview = await prisma.reviews.update({
     where: {
@@ -42,7 +40,7 @@ export async function updateReview(reviewData: Review) {
   return updatedReview;
 }
 
-export async function deleteReview(reviewData: Review) {
+export async function deleteReview(reviewData: Reviews) {
   const { id, googleVolumeId } = reviewData;
   const deletedReview = await prisma.reviews.delete({
     where: {

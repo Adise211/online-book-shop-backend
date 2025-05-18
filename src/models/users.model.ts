@@ -2,10 +2,11 @@
 // TODO: auth - signin user
 // TODO: auth - signout user
 import { PrismaClient, Users } from "@prisma/client";
+import { UserInitInfo } from "../types.js";
 
 const prisma = new PrismaClient();
 
-export async function createUser(data: Users) {
+export async function createUser(data: UserInitInfo) {
   const { email, password, name } = data;
 
   const user = await prisma.users.create({

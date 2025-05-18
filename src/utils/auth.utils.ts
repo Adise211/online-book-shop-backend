@@ -1,12 +1,15 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
 
 /* _AUTHORIZATION_ */
 /* JWT - token */
 const JWT_SECRET = process.env.JWT_SECRET as string;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1h";
+const JWT_EXPIRES_IN = (process.env.JWT_EXPIRES_IN ||
+  "1h") as SignOptions["expiresIn"];
+
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET as string;
-const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || "7d";
+const JWT_REFRESH_EXPIRES_IN = (process.env.JWT_REFRESH_EXPIRES_IN ||
+  "7d") as SignOptions["expiresIn"];
 
 // Generate access token
 export function generateAccessToken(payload: object): string {

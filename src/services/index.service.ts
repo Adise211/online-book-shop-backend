@@ -1,5 +1,5 @@
 import { ResponseToClient } from "../../types.js";
-
+// TODO: Remove old code (responseToClient function)
 const GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/volumes";
 // performence tips: limited amount of results, return spesific fields
 // more info: https://developers.google.com/books/docs/v1/performance

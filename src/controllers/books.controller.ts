@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Book, BookCategories, Result } from "../types.js";
+import { BookInit, Result } from "../types.js";
 import { bookCategories } from "../utils/consts.utils.js";
 import { isCategorieExist } from "../utils/func.utils.js";
 import { googleBooksAPIRequest } from "../services/index.service.js";
@@ -84,7 +84,7 @@ export async function addToFavorites(
   next: NextFunction
 ) {
   try {
-    const book: Book = req.body.data.book;
+    const book: BookInit = req.body.data.book;
     const userId: number = req.body.data.userId;
 
     const saved = await addBookToFavorites(book, userId);

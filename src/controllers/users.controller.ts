@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Users } from "@prisma/client";
 import { createUser, findUserByEmail } from "../models/users.model.js";
-import { Result } from "../types.js";
+import { Result, UserInitInfo } from "../types.js";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -24,7 +24,7 @@ export async function signupUser(
 ) {
   try {
     /* Notice: body treated with type 'any' */
-    let { email, password, name } = req.body.data;
+    let { email, password, name }: UserInitInfo = req.body.data;
 
     const hashedPassword = await hashPassword(password);
     if (hashedPassword) {

@@ -1,4 +1,5 @@
-import { bookCategories } from "./src/utils/consts.js";
+import { Favorites, Users } from "@prisma/client";
+import { bookCategories } from "./utils/consts.utils.js";
 
 // external (google books, external api's)
 // system (db)
@@ -11,24 +12,20 @@ export type Result<T> =
 
 export type BookCategories = (typeof bookCategories)[number]; //* turned array to type */
 
-// export interface User {
-//   id?: number;
-//   email: string;
-//   password: string;
-//   name: string;
-//   favorites?: Book[];
-//   reviews?: Review[];
-// }
+export interface UserInitInfo {
+  email: Users["email"];
+  password: Users["password"];
+  name: Users["name"];
+}
 
-export interface Book {
-  id?: number;
-  title: string;
-  googleVolumeId: string;
-  authors: string[];
-  publishedDate: number; //epoch miliseconds
-  pageCount: number;
-  imageLink: string;
-  rating: number;
+export interface BookInit {
+  title: Favorites["title"];
+  googleVolumeId: Favorites["googleVolumeId"];
+  authors: Favorites["authors"];
+  publishedDate: Favorites["publishedDate"]; //epoch miliseconds
+  pageCount: Favorites["pageCount"];
+  imageLink: Favorites["imageLink"];
+  rating: Favorites["rating"];
   categories: BookCategories[];
 }
 
