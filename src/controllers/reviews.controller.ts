@@ -4,7 +4,7 @@ import {
   createReview,
   deleteReview,
   updateReview,
-} from "../models/reviews.models.js";
+} from "../models/reviews.model.js";
 import { Codes } from "../utils/utilErrors.js";
 import { Reviews } from "@prisma/client";
 // get reviews

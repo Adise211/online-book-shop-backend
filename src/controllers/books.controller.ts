@@ -7,7 +7,7 @@ import {
   addBookToFavorites,
   getAllFavorites,
   removeBookFromFavorites,
-} from "../models/books.models.js";
+} from "../models/books.model.js";
 import { AppError, Codes } from "../utils/utilErrors.js";
 import { Favorites } from "@prisma/client";
 
