@@ -3,10 +3,11 @@ import { Users } from "@prisma/client";
 import { createUser, findUserByEmail } from "../models/users.models.js";
 import { Result } from "../types.js";
 import {
-  generateToken,
+  generateAccessToken,
+  generateRefreshToken,
   hashPassword,
   isPasswordCorrect,
-} from "../utils/auth.utils.js";
+} from "../utils/utilAuth.js";
 import { Codes, AppError } from "../utils/utilErrors.js";
 
 // auth: create user - ✅
@@ -56,11 +57,26 @@ export async function loginUser(
       // user exist - check if password is correct
       const isCorrect = await isPasswordCorrect(password, user.password);
       if (isCorrect) {
+        const payload = {
+          userId: user.id,
+          email: user.email,
+        };
+
+        const accessToken = generateAccessToken(payload);
+        const refreshToken = generateRefreshToken(payload);
+        const cookieName = process.env.COOKIE_NAME_FOR_TOKEN as string;
+        // set refresh token in cookie
+        res.cookie(cookieName, refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production", // HTTPS only in production
+          sameSite: "strict",
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+        });
+
         // password is correct - send token
-        const token = generateToken({ userId: user.id, email: user.email });
         const successResult: Result<object> = {
           success: true,
-          data: { user, token },
+          data: { user, accessToken },
         };
         res.status(Codes.Success.Created).json(successResult);
       } else {

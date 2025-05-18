@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyToken } from "../utils/auth.utils.js";
+import { verifyAccessToken } from "../utils/utilAuth.js";
 // authenticate user (email & password) - ✅
 // authorization (token) - ✅
 
@@ -15,7 +15,7 @@ export function authenticateToken(
     if (!token) {
       res.status(401).json({ message: "No token provided" });
     } else {
-      const user = verifyToken(token);
+      const user = verifyAccessToken(token);
       (req as any).user = user; // attach user to request
       next();
     }
