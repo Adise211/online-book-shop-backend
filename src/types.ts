@@ -3,7 +3,7 @@ import { bookCategories } from "./utils/consts.utils.js";
 
 // external (google books, external api's)
 // system (db)
-type ResultSource = "system" | "external" | "prisma";
+export type ResultSource = "system" | "external" | "prisma";
 type ResultCodes = 1 | -1;
 export type RequestFieldSource = "body" | "query" | "params";
 export type Result<T> =
