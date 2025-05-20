@@ -82,7 +82,7 @@ export function appErrorHandler(
   } else if (error instanceof AppError) {
     result.message = error.message;
     result.source = error.source;
-    return res.status(error.statusCode).json(result);
+    res.status(error.statusCode).json(result);
   } else {
     res.status(500).json(result);
   }
