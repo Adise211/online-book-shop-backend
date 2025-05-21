@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { RequestFieldSource, Result } from "../types.js";
-import { prismaErrorHandler } from "../utils/func.utils.js";
+import { catchPrismaErrors } from "../utils/func.utils.js";
 import { AppError, Codes } from "../utils/errors.utils.js";
 
 export function validateFields(
@@ -66,25 +66,29 @@ export function appErrorHandler(
 ) {
   console.error("Error caught by middleware: ---------------", error);
   // default result
+  let status: number = Codes.Server.General;
+  let errorObjSource: any = new AppError(
+    "Internal server error",
+    status,
+    "system"
+  );
+
+  const prismaError = catchPrismaErrors(error);
+  if (prismaError) {
+    // prisma errors
+    errorObjSource = prismaError;
+  } else if (error instanceof AppError) {
+    // custom errors
+    errorObjSource = error;
+  }
+
+  const { message, statusCode, source } = errorObjSource;
   const result: Result<object> = {
     success: false,
-    message: error.message,
-    source: "system",
+    message,
+    source,
   };
+  status = statusCode;
 
-  const prismaError = prismaErrorHandler(error);
-  if (prismaError.isPrismaError) {
-    // prisma errors
-    const { code, message } = prismaError;
-    result.message = message;
-    result.source = "prisma";
-    res.status(code).json(result);
-  } else if (error instanceof AppError) {
-    const { message, source } = error;
-    result.message = message;
-    result.source = source;
-    res.status(error.statusCode).json(result);
-  } else {
-    res.status(500).json(result);
-  }
+  res.status(status).json(result);
 }

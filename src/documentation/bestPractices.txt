@@ -12,4 +12,4 @@ You can log or reformat errors in one place before they bubble up.
 4. Easier Maintenance:
 Changes in error formatting or logging only happen in one location.
 
-Examples:  function prismaErrorHandler(){}
+Examples:  function catchPrismaErrors(){}
