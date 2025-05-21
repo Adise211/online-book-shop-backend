@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { RequestFieldSource, Result } from "../types.js";
-import { catchPrismaErrors } from "../utils/func.utils.js";
+import { catchPrismaErrors } from "../utils/errors.utils.js";
 import { AppError, Codes } from "../utils/errors.utils.js";
 
 export function validateFields(

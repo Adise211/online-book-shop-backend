@@ -1,3 +1,6 @@
+import { Prisma } from "@prisma/client";
+import { GENERAL_ERROR } from "./errorMsgs.utils.js";
+
 export const Codes = {
   // see more on HTTP status: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
   Success: {
@@ -33,4 +36,31 @@ export class AppError extends Error {
     // Restore prototype chain for instanceof to work
     Object.setPrototypeOf(this, AppError.prototype);
   }
+}
+
+export function catchPrismaErrors(error: object | unknown) {
+  let isPrismaError: boolean = true;
+  let customErrorMessage: string = GENERAL_ERROR;
+  let errorCode: number = 500;
+
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    // https://www.prisma.io/docs/orm/reference/error-reference#prismaclientknownrequesterror
+    if (error.code === "P2002") {
+      customErrorMessage = "Unique constraint violation";
+    }
+    errorCode = 409;
+  } else if (error instanceof Prisma.PrismaClientValidationError) {
+    const prismaErrMsg: string = error.message;
+    const startIndex = prismaErrMsg.indexOf("Argument");
+    const slicedString = prismaErrMsg.slice(startIndex, prismaErrMsg.length);
+
+    customErrorMessage = slicedString;
+    errorCode = 400;
+  } else {
+    isPrismaError = false;
+  }
+
+  return isPrismaError
+    ? new AppError(customErrorMessage, errorCode, "prisma")
+    : null;
 }
