@@ -21,7 +21,14 @@ export const Codes = {
 };
 
 export class AppError extends Error {
-  // custom props - set their types
+  /* 
+    CUSTOM ERROR 
+    -------------
+    This class is an extension of the build-in JS Error class with additional 2 custom params
+    (statusCode, source) to give more details about the error.
+  
+  */
+
   public statusCode: number;
   public source: string;
 
