@@ -31,7 +31,7 @@ model Favorites {
   googleVolumeId String   @default("")
   title          String
   authors        String[]
-  publishedDate  Int
+  publishedDate  String
   pageCount      Int      @default(0)
   imageLink      String
   rating         Int      @default(0)
