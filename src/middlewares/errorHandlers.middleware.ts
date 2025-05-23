@@ -9,7 +9,7 @@ export function validateFields(
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
     let message: AppError["message"] = "";
-    let statusCode: AppError["statusCode"] = 500;
+    let statusCode: AppError["statusCode"] = Codes.Server.General;
     let resultSource: ResultSource = "system";
     let missingFields: string[] = [];
 
@@ -65,7 +65,7 @@ export function appErrorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.error("Error caught by middleware ====>", error);
+  console.error("Error caught by middleware ====>", error.message);
   // default values
   let resultSource: ResultSource = "system";
   const DEFAULT_ERR_MESSAGE = "Internal server error";
