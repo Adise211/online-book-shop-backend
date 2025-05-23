@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { RequestFieldSource, Result } from "../types.js";
+import { RequestFieldSource, Result, ResultSource } from "../types.js";
 import { catchPrismaErrors } from "../utils/errors.utils.js";
 import { AppError, Codes } from "../utils/errors.utils.js";
 
@@ -10,6 +10,7 @@ export function validateFields(
   return (req: Request, res: Response, next: NextFunction) => {
     let message: AppError["message"] = "";
     let statusCode: AppError["statusCode"] = 500;
+    let resultSource: ResultSource = "system";
     let missingFields: string[] = [];
 
     if (!source || requiredFields.length <= 0) {
@@ -54,7 +55,7 @@ export function validateFields(
       }
     }
 
-    next(new AppError(message, statusCode, "system"));
+    next(new AppError(message, statusCode, resultSource));
   };
 }
 
@@ -64,31 +65,33 @@ export function appErrorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.error("Error caught by middleware: ---------------", error);
-  // default result
-  let status: number = Codes.Server.General;
-  let errorObjSource: any = new AppError(
-    "Internal server error",
-    status,
-    "system"
+  console.error("Error caught by middleware ====>", error);
+  // default values
+  let resultSource: ResultSource = "system";
+  const DEFAULT_ERR_MESSAGE = "Internal server error";
+
+  // default error
+  let _errObj: any = new AppError(
+    DEFAULT_ERR_MESSAGE,
+    Codes.Server.General, // 500
+    resultSource
   );
 
   const prismaError = catchPrismaErrors(error);
   if (prismaError) {
     // prisma errors
-    errorObjSource = prismaError;
+    _errObj = prismaError;
   } else if (error instanceof AppError) {
     // custom errors
-    errorObjSource = error;
+    _errObj = error;
   }
 
-  const { message, statusCode, source } = errorObjSource;
+  const { message, statusCode, source } = _errObj;
   const result: Result<object> = {
     success: false,
     message,
     source,
   };
-  status = statusCode;
 
-  res.status(status).json(result);
+  res.status(statusCode).json(result);
 }
