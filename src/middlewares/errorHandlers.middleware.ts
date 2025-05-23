@@ -18,8 +18,7 @@ export function validateFields(
       console.error(
         "Error Handler 'validateFields': params are missing ('source: string' || 'requiredFields: string[]')"
       );
-      message = "Internal server error";
-      statusCode = Codes.Server.General;
+      throw new Error();
     } else {
       if (!req[source]) {
         // req.body || req.params || req.query was not found!
@@ -28,6 +27,7 @@ export function validateFields(
         );
         message = `'${source}' in request was not found`;
         statusCode = Codes.Client.Bad_Request;
+        next(new AppError(message, statusCode, resultSource));
       } else if (
         req[source] &&
         requiredFields.length > 2 &&
@@ -39,6 +39,7 @@ export function validateFields(
         );
         message = `fields are not wrapped with 'data' object`;
         statusCode = Codes.Client.Bad_Request;
+        next(new AppError(message, statusCode, resultSource));
       } else {
         // Check if required fields exist in the request.source (body, params or query)
         requiredFields.forEach((field) => {
@@ -52,10 +53,9 @@ export function validateFields(
           message = `Missing fields: (${missingFields.toString()})`;
           statusCode = Codes.Client.Bad_Request;
         }
+        next();
       }
     }
-
-    next(new AppError(message, statusCode, resultSource));
   };
 }
 
