@@ -13,3 +13,22 @@ You can log or reformat errors in one place before they bubble up.
 Changes in error formatting or logging only happen in one location.
 
 Examples:  function catchPrismaErrors(){}
+
+------------------------------------------------------
+
+## Express Middlewares ##
+
+1. Middlewares will be exacuted by code order:
+
+    app.use(errHandler1);
+    app.use(errHandler2);
+
+2. Remember! to move to the next middleware add next() or throw error:
+
+    function errHandler1(err, req, res, next) {
+      
+      // some code
+      ............
+
+      next();
+    }
