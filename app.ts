@@ -1,9 +1,9 @@
 import express from "express";
-import router from "./src/routes/index.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { appErrorHandler } from "./src/middlewares/errorHandlers.middleware.js";
+import rootRouter from "./src/routes/index.js";
 
 const app = express();
 dotenv.config();
@@ -17,6 +17,6 @@ app.use(express.json()); // Enable parsing of JSON request bodies from raw strea
 app.use(cookieParser());
 app.use(cors(corsConfig));
 
-app.use(router);
+app.use(rootRouter);
 app.use(appErrorHandler);
 app.listen(3030);
